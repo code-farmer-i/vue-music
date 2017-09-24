@@ -3,7 +3,7 @@
     <router-link tag="div" class="tab-item" :to="{name: 'Recommend'}" replace>
       <span class="tab-link">推荐</span>
     </router-link>
-    <router-link tag="div" class="tab-item" :to="{name: 'Singer'}" replace>
+    <router-link tag="div" class="tab-item" :to="{name: 'SingerList'}" replace>
       <span class="tab-link">歌手</span>
     </router-link>
     <router-link tag="div" class="tab-item" :to="{name: 'Rank'}" replace>

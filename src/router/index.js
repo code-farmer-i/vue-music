@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 import Home from 'pages/Home/Home'
 import Recommend from 'pages/Home/childrens/Recommend'
-import Singer from 'pages/Home/childrens/Singer'
+import SingerList from 'pages/Home/childrens/SingerList'
 import Rank from 'pages/Home/childrens/Rank'
 import Search from 'pages/Home/childrens/Search'
 
@@ -23,9 +23,9 @@ export default new Router({
         name: 'Recommend',
         component: Recommend
       }, {
-        path: '/Singer',
-        name: 'Singer',
-        component: Singer
+        path: '/SingerList',
+        name: 'SingerList',
+        component: SingerList
       }, {
         path: '/Rank',
         name: 'Rank',

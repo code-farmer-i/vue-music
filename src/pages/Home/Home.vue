@@ -11,10 +11,6 @@
 <script type="text/ecmascript-6">
   import MainHeader from 'components/MainHeader/MainHeader'
   import TopBar from 'components/TopBar/TopBar'
-  import Recommend from 'pages/Home/childrens/Recommend'
-  import Singer from 'pages/Home/childrens/Singer'
-  import Rank from 'pages/Home/childrens/Rank'
-  import Search from 'pages/Home/childrens/Search'
 
   export default{
     components:{
