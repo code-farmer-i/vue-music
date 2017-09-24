@@ -29,6 +29,9 @@ export default{
     },
     getSingerList(){
       return apiFactory(API.Singer())
+    },
+    getSingerDetails({}, singerId){
+      return apiFactory(API.SingerDetails(singerId))
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="singer">
+  <div class="singer-list">
     <scroll class="singer-scroll" :data="singerList" :probeType="3" ref="scroll" @scrolling="onScroll">
       <ul>
         <li v-for="group in singerList" class="list-group" ref="listGroup">
@@ -29,6 +29,7 @@
 <script type="text/ecmascript-6">
   import Scroll from 'components/common/Scroll/Scroll'
   import Loading from 'components/common/Loading/Loading'
+  import {mapMutations} from 'vuex'
 
   let touch = {};
   const sortItemHeight = 18;
@@ -65,6 +66,11 @@
         this.$refs.scroll.scrollToElement(this.$refs.listGroup[idx])
         this.sortActiveIdx = +idx;
       },
+      selectItem(singer){
+        this.setSinger(singer)
+
+        this.$router.push({name: 'Singer', params:{singerId: singer.id}})
+      },
       async getSingerList(){
         const result = await this.$store.dispatch('getSingerList');
 
@@ -81,7 +87,7 @@
         list.forEach((val, index)=> {
           const singer = {
             sort: val.Findex,
-            id: val.Fsinger_id,
+            id: val.Fsinger_mid,
             name: val.Fsinger_name,
             avatar: `https://y.gtimg.cn/music/photo_new/T001R300x300M000${val.Fsinger_mid}.jpg?max_age=2592000`
           }
@@ -140,7 +146,8 @@
             break;
           }
         }
-      }
+      },
+      ...mapMutations(['setSinger'])
     },
     watch:{
       singerList(){
@@ -175,7 +182,7 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "../../../assets/stylus/variable.styl";
 
-  .singer
+  .singer-list
     position fixed
     top 88px
     bottom 0

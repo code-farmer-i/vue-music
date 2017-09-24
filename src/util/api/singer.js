@@ -22,4 +22,21 @@ export default {
       method: 'jsonp'
     }
   },
+  SingerDetails: (singerId)=>{
+    return {
+      params: {
+        hostUin: 0,
+        needNewCode: 0,
+        platform: 'yqq',
+        order: 'listen',
+        begin: 0,
+        num: 80,
+        songstatus: 1,
+        singermid: singerId,
+        ...commonParams
+      },
+      url: getApi('/v8/fcg-bin/fcg_v8_singer_track_cp.fcg'),
+      method: 'jsonp'
+    }
+  },
 }

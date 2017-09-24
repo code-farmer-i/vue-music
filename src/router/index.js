@@ -7,6 +7,8 @@ import SingerList from 'pages/Home/childrens/SingerList'
 import Rank from 'pages/Home/childrens/Rank'
 import Search from 'pages/Home/childrens/Search'
 
+import Singer from 'pages/Singer/Singer'
+
 Vue.use(Router)
 
 export default new Router({
@@ -35,6 +37,11 @@ export default new Router({
         name: 'Search',
         component: Search
       }]
+    },
+    {
+      path: '/SingerList/Singer/:singerId',
+      name: 'Singer',
+      component: Singer
     }
   ]
 })

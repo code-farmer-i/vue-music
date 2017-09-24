@@ -1,41 +1,38 @@
 <template>
-  <div class="top-bar">
-    <router-link tag="div" class="tab-item" :to="{name: 'Recommend'}" replace>
-      <span class="tab-link">推荐</span>
-    </router-link>
-    <router-link tag="div" class="tab-item" :to="{name: 'SingerList'}" replace>
-      <span class="tab-link">歌手</span>
-    </router-link>
-    <router-link tag="div" class="tab-item" :to="{name: 'Rank'}" replace>
-      <span class="tab-link">排行
-      </span>
-    </router-link>
-    <router-link tag="div" class="tab-item" :to="{name: 'Search'}" replace>
-      <span class="tab-link">搜索</span>
-    </router-link>
-  </div>
+    <div class="top-bar">
+      <i class="icon-back" @click="$router.go(-1)"></i>
+      {{title}}
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
-  export default {}
+    export default{
+      props: {
+        title: {
+          type: String,
+          default: ''
+        }
+      }
+    }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
-  @import "../../assets/stylus/variable.styl";
-
+<style lang="stylus">
   .top-bar
-    display flex
-    height 44px
-    line-height 44px
-    font-size $font-size-medium
-    .tab-item
-      flex 1
-      text-align center
-      .tab-link
-        padding-bottom 5px
-        color $color-text-l
-      &.router-link-active
-        .tab-link
-          color $color-theme
-          border-bottom 2px solid $color-theme
+    position absolute
+    top 0
+    z-index 99
+    width 100%
+    height 40px
+    line-height 40px
+    text-align center
+    white-space nowrap
+    font-size 18px
+    color #fff
+    .icon-back
+      position absolute
+      left 10px
+      top 50%
+      font-size 22px
+      color #ffcd32
+      transform translateY(-50%)
 </style>

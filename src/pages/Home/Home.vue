@@ -1,7 +1,7 @@
 <template>
   <div class="Home">
     <main-header></main-header>
-    <top-bar></top-bar>
+    <nav-bar></nav-bar>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -10,12 +10,13 @@
 
 <script type="text/ecmascript-6">
   import MainHeader from 'components/MainHeader/MainHeader'
-  import TopBar from 'components/TopBar/TopBar'
+  import NavBar from 'components/NavBar/NavBar'
 
   export default{
+    name: 'Home',
     components:{
       MainHeader,
-      TopBar,
+      NavBar,
     }
   }
 </script>
@@ -30,4 +31,5 @@
       max-width 500px
       background-color #222
       transform translateX( -50% )
+      transform-style preserve-3d
 </style>

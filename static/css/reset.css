@@ -30,6 +30,7 @@ footer, header, menu, nav, section {
 }
 
 html, body{
+  height:100%;
   line-height: 1;
   font-family: PingFang SC,STHeitiSC-Light,Helvetica-Light,arial,sans-serif;
   user-select: none;
