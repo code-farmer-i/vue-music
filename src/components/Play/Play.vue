@@ -4,9 +4,9 @@
         <div class="title-group">
           <div class="player-header">
             <i class="icon-back" @click="showMini"></i>
-            {{currentSong.songName}}
+            <div class="song-name" v-html="currentSong.name"></div>
           </div>
-          <div class="singerName">{{currentSong.singerName}}</div>
+          <div class="singerName" v-html="currentSong.singerName"></div>
         </div>
         <div class="player-cd">
           <div class="cd-wrap" :class="[playing ? 'play' : 'pause']">
@@ -175,7 +175,7 @@
       },
       watch:{
         currentSong(song){
-          this._playSong(song.songId)
+          this._playSong(song.id)
         },
         mode(){
           if(this.getMode == 'loop'){
@@ -197,6 +197,7 @@
 
 <style lang="stylus" type="text/stylus">
     @import "../../assets/stylus/variable.styl";
+    @import "../../assets/stylus/mixin.styl";
 
     .normal-player
       position fixed
@@ -237,6 +238,10 @@
           text-align center
           z-index 2
           color #fff
+          .song-name
+            margin 0 auto
+            width 70%
+            no-wrap()
           .icon-back
             padding 9px
             position absolute

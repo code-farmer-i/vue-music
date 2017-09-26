@@ -1,7 +1,7 @@
 <template>
     <div class="top-bar">
       <i class="icon-back" @click="$router.go(-1)"></i>
-      {{title}}
+      <div class="top-title">{{title}}</div>
     </div>
 </template>
 
@@ -17,6 +17,8 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
+  @import "../../assets/stylus/mixin.styl";
+
   .top-bar
     position absolute
     top 0
@@ -28,6 +30,10 @@
     white-space nowrap
     font-size 18px
     color #fff
+    .top-title
+      margin 0 auto
+      width 70%
+      no-wrap()
     .icon-back
       position absolute
       left 10px
@@ -35,4 +41,5 @@
       font-size 22px
       color #ffcd32
       transform translateY(-50%)
+      extend-click-after()
 </style>

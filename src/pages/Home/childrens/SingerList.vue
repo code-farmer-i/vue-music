@@ -31,6 +31,7 @@
   import Loading from 'components/common/Loading/Loading'
   import {refreshScroll} from '../../../Mixin/Mixin'
   import {mapMutations, mapState} from 'vuex'
+  import createSinger from '../../../util/createSinger'
 
   let touch = {};
   const sortItemHeight = 18;
@@ -69,9 +70,11 @@
         this.sortActiveIdx = +idx;
       },
       selectItem(singer){
-        this.setSinger(singer)
+        const singerObj = new createSinger(singer.id, singer.name)
 
-        this.$router.push({name: 'Singer', params:{singerId: singer.id}})
+        this.setSinger(singerObj)
+
+        this.$router.push({name: 'Singer', params:{singerId: singerObj.id}})
       },
       async getSingerList(){
         const result = await this.$store.dispatch('getSingerList');

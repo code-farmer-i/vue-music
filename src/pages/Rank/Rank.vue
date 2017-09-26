@@ -6,8 +6,14 @@
       <scroll :data="songList" ref="scroll">
         <ul class="song-list-wrap">
           <li v-for="(item, index) in songList" class="song-wrap" @click="_playList(index)">
-            <div v-text="item.data.songname" class="song-name"></div>
-            <div class="song-disc">{{item.data.singer[0].name}} {{item.data.albumname}}</div>
+            <div class="rank-index">
+              <span v-if="index <= 2" class="icon" :class="[`icon${index}`]"></span>
+              <span v-if="index > 2" class="text">{{index + 1}}</span>
+            </div>
+            <div class="content">
+              <div v-text="item.data.songname" class="song-name"></div>
+              <div class="song-disc">{{item.data.singer[0].name}} {{item.data.albumname}}</div>
+            </div>
           </li>
         </ul>
       </scroll>
@@ -49,7 +55,7 @@
         const rankDetails = await this.$store.dispatch('getRankListDetails', rankId)
 
         this.songList = Object.freeze(rankDetails.songlist)
-        this.rankInfo = rankDetails.topinfo;
+        this.rankInfo = Object.freeze(rankDetails.topinfo);
       },
       _playList(currentIdx){
         const songList = this.songList.map((val)=>{
@@ -74,6 +80,9 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
+  @import "../../assets/stylus/variable.styl";
+  @import "../../assets/stylus/mixin.styl";
+
   .rank-details
     position fixed
     top 0
@@ -98,6 +107,8 @@
       .song-list-wrap
         padding 20px 30px
         .song-wrap
+          display flex
+          align-items center
           padding 10px 0
           font-size 14px
           line-height 20px
@@ -112,6 +123,28 @@
             white-space nowrap
             margin-top 4px
             color hsla(0,0%,100%,.3)
+        .rank-index
+          margin-right 30px
+          color $color-theme
+          font-size 18px
+          .icon
+            display inline-block
+            width 25px
+            height 24px
+            background-size 25px 24px
+          .text
+            display inline-block
+            width 25px
+            text-align center
+          .icon0
+            bg-image('first')
+          .icon1
+            bg-image('second')
+          .icon2
+            bg-image('third')
+        .content
+          no-wrap()
+
 
 
 

@@ -20,7 +20,6 @@ export const refreshScroll = {
   methods:{
     refreshScrollView(){
       if(this.MiniShow){
-        this.scrollReresh = true;
         this.$refs.scrollView.style.bottom = '60px'
 
         this.$nextTick(()=>{

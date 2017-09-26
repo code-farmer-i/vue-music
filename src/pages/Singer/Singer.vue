@@ -22,6 +22,7 @@
     import Loading from 'components/common/Loading/Loading'
     import Scroll from 'components/common/Scroll/Scroll'
     import {refreshScroll} from '../../Mixin/Mixin'
+    import createSong from '../../util/createSong'
 
     export default{
       name: 'Singer',
@@ -50,12 +51,7 @@
         },
         _playList(currentIdx){
           const songList = this.songList.map((val)=>{
-            return {
-              songId: val.musicData.songid,
-              songName: val.musicData.songname,
-              singerName: val.musicData.singer[0].name,
-              discImg: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${val.musicData.albummid}.jpg?max_age=2592000`
-            }
+            return new createSong(val.musicData)
           })
 
           this.playList({songList: Object.freeze(songList), currentIdx})

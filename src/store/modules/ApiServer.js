@@ -33,11 +33,17 @@ export default{
     getSingerDetails({}, singerId){
       return apiFactory(API.SingerDetails(singerId))
     },
-    getRankList({}, singerId){
+    getRankList(){
       return apiFactory(API.Rank())
     },
     getRankListDetails({}, rankId){
       return apiFactory(API.RankDetails(rankId))
+    },
+    getHotKey(){
+      return apiFactory(API.HotKey())
+    },
+    getSerch({}, params){
+      return apiFactory(API.Serch(params))
     },
   }
 }
