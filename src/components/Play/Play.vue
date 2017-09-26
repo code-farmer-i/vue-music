@@ -166,6 +166,7 @@
         },
         ...mapState({
           playing: state => state.Play.playing,
+          mode: state => state.Play.mode,
           fullScreen: state => state.Play.fullScreen,
           songList: state => state.Play.songList,
           currentIdx: state => state.Play.currentIdx,
@@ -179,6 +180,8 @@
         mode(){
           if(this.getMode == 'loop'){
             this.audioEl.loop = true;
+          }else{
+            this.audioEl.loop = false;
           }
         },
         playing(play){

@@ -1,7 +1,7 @@
 <template>
   <div class="m-header">
     <h1 class="text">Vue Music</h1>
-    <router-link tag="div" class="mine">
+    <router-link tag="div" class="mine" to="/user">
       <i class="icon-mine"></i>
     </router-link>
   </div>
