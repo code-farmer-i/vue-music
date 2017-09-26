@@ -1,15 +1,13 @@
 <template>
   <div>
-    <div class="left-area" :style="{width: `${areaWidth}px`}"></div>
     <div id="app" @touchmove.prevent>
       <transition :name="transitionName">
-        <keep-alive exclude="Singer">
+        <keep-alive :exclude="['Singer', 'Rank-Details']">
           <router-view class="router-el"></router-view>
         </keep-alive>
       </transition>
       <play></play>
     </div>
-    <div class="right-area" :style="{width: `${areaWidth}px`}"></div>
   </div>
 </template>
 
@@ -24,13 +22,6 @@
         transitionName: '',
         areaWidth: 0
       }
-    },
-    mounted(){
-      this.$nextTick(()=>{
-        const routerWidth = document.querySelector('.router-el').clientWidth;
-
-        this.areaWidth = (window.innerWidth - routerWidth) / 2
-      })
     },
     watch:{
       '$route': function(to, from){
@@ -50,20 +41,7 @@
   }
 </script>
 
-<style lang="stylus">
-  .left-area, .right-area
-    position fixed
-    top 0
-    bottom 0
-    z-index 9999
-    background-color #fff
-
-  .left-area
-    left 0
-
-  .right-area
-    right 0
-
+<style lang="stylus" type="text/stylus">
   .translate-left-enter-active, .translate-left-leave-active, .translate-right-enter-active, .translate-right-leave-active
     transition .4s
 

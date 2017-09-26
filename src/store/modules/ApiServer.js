@@ -2,7 +2,7 @@ import API from '../../util/api'
 import axios from 'axios'
 import jsonp from '../../util/myJsonp'
 
-const apiFactory = ({url, params, method})=>{
+const apiFactory = ({url, params, method, dataName})=>{
   console.log(url, params, method)
   const request = method === 'jsonp' ?
     jsonp(url, params, {param: 'jsonpCallback'})
@@ -16,7 +16,7 @@ const apiFactory = ({url, params, method})=>{
     request
     .then((res)=>{
       if(res.code == 0){
-        resolve(res.data)
+        resolve(res[dataName] || res.data || res)
       }
     })
   })
@@ -32,6 +32,12 @@ export default{
     },
     getSingerDetails({}, singerId){
       return apiFactory(API.SingerDetails(singerId))
-    }
+    },
+    getRankList({}, singerId){
+      return apiFactory(API.Rank())
+    },
+    getRankListDetails({}, rankId){
+      return apiFactory(API.RankDetails(rankId))
+    },
   }
 }

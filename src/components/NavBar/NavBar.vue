@@ -6,7 +6,7 @@
     <router-link tag="div" class="tab-item" :to="{name: 'SingerList'}" replace>
       <span class="tab-link">歌手</span>
     </router-link>
-    <router-link tag="div" class="tab-item" :to="{name: 'Rank'}" replace>
+    <router-link tag="div" class="tab-item" :to="{name: 'RankList'}" replace>
       <span class="tab-link">排行
       </span>
     </router-link>
