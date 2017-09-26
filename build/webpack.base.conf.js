@@ -2,6 +2,7 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+var urlPublicPath = process.env.NODE_ENV === 'production' ? '/vue-music/' : '../../'
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -44,8 +45,10 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          limit: 80000,
+          name: '[name].[hash:7].[ext]',
+          outputPath: 'static/img/',
+          publicPath: urlPublicPath
         }
       },
       {
@@ -53,7 +56,9 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('media/[name].[hash:7].[ext]')
+          name: '[name].[hash:7].[ext]',
+          outputPath: 'static/media/',
+          publicPath: urlPublicPath
         }
       },
       {
@@ -61,7 +66,9 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: '[name].[hash:7].[ext]',
+          outputPath: 'static/font/',
+          publicPath: urlPublicPath
         }
       }
     ]

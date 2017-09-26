@@ -21,7 +21,7 @@
   }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" type="text/stylus">
     .Home
       position fixed
       top 0

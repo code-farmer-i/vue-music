@@ -41,7 +41,7 @@
     data() {
       return {
         recommends: [],
-        discList: [],
+        discList: []
       }
     },
     created() {
@@ -62,7 +62,7 @@
   }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus" type="text/stylus">
   @import "../../../assets/stylus/variable.styl";
 
   .recommend
@@ -74,10 +74,12 @@
     height 100%
     overflow hidden
   .slider-wrapper
+    padding-top 40%
     position relative
     width 100%
     overflow hidden
     .needsclick
+      display block
       width 100%
   .recommend-list
     .list-title

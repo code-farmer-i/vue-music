@@ -7,36 +7,47 @@
           <router-view class="router-el"></router-view>
         </keep-alive>
       </transition>
+      <play></play>
     </div>
     <div class="right-area" :style="{width: `${areaWidth}px`}"></div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-export default {
-  name: 'app',
-  data(){
-    return {
-      transitionName: '',
-      areaWidth: 0
-    }
-  },
-  mounted(){
-    this.$nextTick(()=>{
-      const routerWidth = document.querySelector('.router-el').clientWidth;
+  import Play from 'components/Play/Play'
+  import {mapState} from 'vuex'
 
-      this.areaWidth = (window.innerWidth - routerWidth) / 2
-    })
-  },
-  watch:{
-    '$route': function(to, from){
-      const toDepth = to.path.split('/').length
-      const fromDepth = from.path.split('/').length
-      this.transitionName = toDepth < fromDepth ? 'translate-right' : 'translate-left'
+  export default {
+    name: 'app',
+    data(){
+      return {
+        transitionName: '',
+        areaWidth: 0
+      }
+    },
+    mounted(){
+      this.$nextTick(()=>{
+        const routerWidth = document.querySelector('.router-el').clientWidth;
+
+        this.areaWidth = (window.innerWidth - routerWidth) / 2
+      })
+    },
+    watch:{
+      '$route': function(to, from){
+        const toDepth = to.path.split('/').length
+        const fromDepth = from.path.split('/').length
+        this.transitionName = toDepth < fromDepth ? 'translate-right' : 'translate-left'
+      }
+    },
+    computed:{
+      ...mapState({
+        currentIdx: state => state.Play.currentIdx
+      })
+    },
+    components:{
+      Play
     }
   }
-
-}
 </script>
 
 <style lang="stylus">

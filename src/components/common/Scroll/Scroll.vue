@@ -1,5 +1,5 @@
 <template>
-    <div ref="wrapper">
+    <div ref="wrapper" class="scroll-wrap">
       <slot></slot>
     </div>
 </template>
@@ -20,6 +20,10 @@
         data: {
           type: Array,
           default: null
+        },
+        listenScroll:{
+          type: Boolean,
+          default: false
         }
       },
       mounted(){
@@ -38,20 +42,31 @@
             click: this.click,
           })
 
-          this.scroll.on('scroll', (pos)=>{
-             that.$emit('scrolling', pos)
-          })
+          if(this.listenScroll){
+            this.scroll.on('scroll', (pos)=>{
+              that.$emit('scrolling', pos)
+            })
+          }
         },
         scrollToElement(...arg){
           this.scroll && this.scroll.scrollToElement.apply(this.scroll, arg);
         },
+        refresh(){
+          this.scroll && this.scroll.refresh()
+        }
       },
       watch:{
         data(){
           this.$nextTick(()=>{
-            this.scroll && this.scroll.refresh()
+            this.refresh()
           })
         }
       }
     }
 </script>
+
+<style lang="stylus" type="text/stylus">
+  .scroll-wrap
+    height 100%
+    overflow hidden
+</style>

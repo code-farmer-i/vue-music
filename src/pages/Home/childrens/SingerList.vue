@@ -1,6 +1,6 @@
 <template>
-  <div class="singer-list">
-    <scroll class="singer-scroll" :data="singerList" :probeType="3" ref="scroll" @scrolling="onScroll">
+  <div class="singer-list" ref="scrollView">
+    <scroll class="singer-scroll" :data="singerList" :probeType="3" :listenScroll="true" ref="scroll" @scrolling="onScroll">
       <ul>
         <li v-for="group in singerList" class="list-group" ref="listGroup">
           <h2 class="list-group-title">{{group.sort}}</h2>
@@ -29,7 +29,8 @@
 <script type="text/ecmascript-6">
   import Scroll from 'components/common/Scroll/Scroll'
   import Loading from 'components/common/Loading/Loading'
-  import {mapMutations} from 'vuex'
+  import {refreshScroll} from '../../../Mixin/Mixin'
+  import {mapMutations, mapState} from 'vuex'
 
   let touch = {};
   const sortItemHeight = 18;
@@ -44,6 +45,7 @@
         sortActiveIdx: 0
       }
     },
+    mixins: [refreshScroll],
     created(){
       this.getSingerList()
     },
@@ -179,7 +181,7 @@
   }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" type="text/stylus">
   @import "../../../assets/stylus/variable.styl";
 
   .singer-list

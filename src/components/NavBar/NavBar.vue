@@ -20,7 +20,7 @@
   export default {}
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" type="text/stylus">
   @import "../../assets/stylus/variable.styl";
 
   .nav-bar

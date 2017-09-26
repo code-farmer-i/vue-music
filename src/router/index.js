@@ -3,11 +3,12 @@ import Router from 'vue-router'
 
 import Home from 'pages/Home/Home'
 import Recommend from 'pages/Home/childrens/Recommend'
-import SingerList from 'pages/Home/childrens/SingerList'
-import Rank from 'pages/Home/childrens/Rank'
-import Search from 'pages/Home/childrens/Search'
 
-import Singer from 'pages/Singer/Singer'
+const SingerList = r => require.ensure([], () => r(require('pages/Home/childrens/SingerList')), 'SingerList')
+const Rank = r => require.ensure([], () => r(require('pages/Home/childrens/Rank')), 'Rank')
+const Search = r => require.ensure([], () => r(require('pages/Home/childrens/Search')), 'Search')
+
+const Singer = r => require.ensure([], () => r(require('pages/Singer/Singer')), 'Singer')
 
 Vue.use(Router)
 

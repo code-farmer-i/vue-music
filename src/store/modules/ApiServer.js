@@ -1,6 +1,6 @@
-import API from '../util/api'
+import API from '../../util/api'
 import axios from 'axios'
-import jsonp from '../util/jsonp'
+import jsonp from '../../util/myJsonp'
 
 const apiFactory = ({url, params, method})=>{
   console.log(url, params, method)
