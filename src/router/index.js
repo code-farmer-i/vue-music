@@ -10,6 +10,7 @@ const Search = r => require.ensure([], () => r(require('pages/Home/childrens/Sea
 
 const Singer = r => require.ensure([], () => r(require('pages/Singer/Singer')), 'Singer')
 const Rank = r => require.ensure([], () => r(require('pages/Rank/Rank')), 'Rank')
+const User = r => require.ensure([], () => r(require('pages/User/User')), 'User')
 
 Vue.use(Router)
 
@@ -49,6 +50,11 @@ export default new Router({
       path: '/RankList/Rank/:rankId',
       name: 'Rank',
       component: Rank
+    },
+    {
+      path: '/Home/User',
+      name: 'User',
+      component: User
     }
   ]
 })

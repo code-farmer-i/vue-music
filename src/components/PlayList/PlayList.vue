@@ -17,7 +17,7 @@
                   <div v-for="(song, index) in songList" class="item" :key="song.id">
                     <i class="icon playing" :class="{'icon-play': index == currentIdx}"></i>
                     <div class="song-info" v-html="`${song.name} ${song.singerName}`" @click="setCurrentIdx(index)"></div>
-                    <i class="icon icon-not-favorite"></i>
+                    <i class="icon" :class="isFavorite(song.id) ? 'icon-favorite' : 'icon-not-favorite'" @click="toggleFavorite(song)"></i>
                     <i class="icon icon-delete" @click="removeSongItem(index)"></i>
                   </div>
                 </transition-group>
@@ -32,27 +32,15 @@
 <script type="text/ecmascript-6">
     import {mapState, mapMutations, mapActions, mapGetters} from 'vuex'
     import Scroll from '../common/Scroll/Scroll'
+    import {favoriteMixin, ModeMixin} from '../../Mixin/Mixin'
 
     export default {
+      mixins:[favoriteMixin, ModeMixin],
       computed:{
-        getModeIcon(){
-          let icon;
-
-          if(this.getMode == 'normal'){
-            icon = 'icon-sequence'
-          }else if(this.getMode == 'loop'){
-            icon = 'icon-loop'
-          }else{
-            icon = 'icon-random'
-          }
-
-          return icon;
-        },
         ...mapState({
           songList: state => state.Play.songList,
           currentIdx: state => state.Play.currentIdx
-        }),
-        ...mapGetters(['getModeCN', 'getMode'])
+        })
       },
       methods:{
         removeSongItem(idx){
@@ -71,7 +59,7 @@
 
           scrollComponent.refresh()
         },
-        ...mapMutations(['hidePlayList', 'setCurrentIdx', 'changeMode', 'removeSong'])
+        ...mapMutations(['hidePlayList', 'setCurrentIdx', 'removeSong'])
       },
       components:{
         Scroll
@@ -129,11 +117,11 @@
             flex 1
             color $color-text-d
             no-wrap()
-          .icon-not-favorite, .icon-delete
+          .icon-not-favorite, .icon-favorite, .icon-delete
             position relative
             color $color-theme
             padding 4px
-          .icon-not-favorite
+          .icon-not-favorite, .icon-favorite
             margin-right 10px
   .play-list-enter-active.play-list{
     animation: list-active .3s forwards

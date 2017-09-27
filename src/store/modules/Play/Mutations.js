@@ -1,4 +1,4 @@
-const MODE_TYPE = ['normal', 'loop', 'random']
+import {MODE_TYPE} from '../../../util/constant'
 
 export default {
   play(state){
@@ -27,11 +27,7 @@ export default {
     state.currentIdx = currentIdx;
   },
   addSong(state, song){
-    const newSongList = [...state.songList];
-
-    newSongList.unshift(song)
-
-    state.songList = newSongList;
+    state.songList = [song, ...state.songList]
   },
   removeSong(state, idx){
     const newSongList = [...state.songList];
@@ -40,7 +36,8 @@ export default {
 
     //若删除的歌曲索引小于当前播放歌曲 随数组长度变化 当前播放歌曲的索引-1
     idx < state.currentIdx && state.currentIdx--;
-    state.songList = newSongList
+
+    state.songList = Object.freeze(newSongList)
   },
   changeMode(state){
     if(state.mode == MODE_TYPE.length - 1){
@@ -49,27 +46,23 @@ export default {
       state.mode++;
     }
   },
-  changeSong(state, type){
-    if(MODE_TYPE[state.mode] == 'random'){
-      const randomIdx = Math.floor(Math.random() * (state.songList.length - 1))
+  playRandom(state){
+    const randomIdx = Math.floor(Math.random() * (state.songList.length - 1))
 
-      state.currentIdx = randomIdx;
-    }else if(type == 'next'){
-      if(state.currentIdx == state.songList.length - 1){
-        state.songList = [...state.songList]
-        state.currentIdx = 0;
-      }else{
-        state.currentIdx++;
-      }
-    }else{
-      if(state.currentIdx == 0){
-        state.songList = [...state.songList]
-        state.currentIdx = state.songList.length - 1;
-      }else{
-        state.currentIdx--;
-      }
-    }
-
-    state.playing = true;
+    state.currentIdx = randomIdx;
+  },
+  playNext(state){
+    state.currentIdx++
+  },
+  playPrev(state){
+    state.currentIdx--
+  },
+  playFirstSong(state){
+    state.songList = [...state.songList];
+    state.currentIdx = 0;
+  },
+  playLastSong(state){
+    state.songList = [...state.songList];
+    state.currentIdx = state.songList.length - 1;
   }
 }

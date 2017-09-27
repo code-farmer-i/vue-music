@@ -82,7 +82,7 @@
         async getHotKey(){
           const result = await API.getHotKey();
 
-          this.hotKey = result.hotkey.slice(0, 9);
+          this.hotKey = Object.freeze(result.hotkey.slice(0, 9));
         },
         async getSearch(){
           this.searching = !this.songList.length ? true : false

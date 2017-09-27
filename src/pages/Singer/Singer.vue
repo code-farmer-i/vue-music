@@ -32,7 +32,8 @@
           singerName: '',
           singerPhoto: '',
           songList: [],
-          MiniReresh: false
+          MiniReresh: false,
+          a: {}
         }
       },
       mixins: [refreshScroll],
@@ -46,7 +47,7 @@
       },
       methods:{
         async getSingerDetails(singerId){
-          const singerDetails = await API.getSingerDetails(singerId)
+          let singerDetails = await API.getSingerDetails(singerId)
 
           this.songList = Object.freeze(singerDetails.list)
         },

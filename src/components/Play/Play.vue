@@ -42,7 +42,10 @@
               <i class="icon-next" @click="changeSong('next')"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon icon-not-favorite"></i>
+              <i class="icon"
+                 :class="[isFavorite(currentSong.id) ? 'icon-favorite' : 'icon-not-favorite']"
+                 @click="toggleFavorite(currentSong)"
+              ></i>
             </div>
           </div>
         </div>
@@ -69,7 +72,6 @@
                 <div class="play-icon" :class="[playing ? 'play' : 'pause']"></div>
               </div>
             </div>
-
           </div>
           <div class="control" @click.stop="showPlayList">
             <i class="icon-playlist"></i>
@@ -84,6 +86,7 @@
 <script type="text/ecmascript-6">
     import PlayList from '../PlayList/PlayList'
     import {mapState, mapActions, mapMutations, mapGetters} from 'vuex'
+    import {favoriteMixin, ModeMixin} from '../../Mixin/Mixin'
 
     export default {
       data(){
@@ -95,6 +98,7 @@
           progressBtnWidth: 30
         }
       },
+      mixins:[favoriteMixin, ModeMixin],
       mounted(){
         this.$nextTick(()=>{
           this.audioEl = this.$refs.audioEl;
@@ -139,25 +143,15 @@
         _playSong(songId){
           this.audioEl.src = `http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`;
           this.audioEl.play();
+
+          this.addToLatelyList(this.currentSong)
         },
-        ...mapMutations(['showMini', 'showFull', 'play', 'pause', 'changeSong', 'changeMode', 'showPlayList'])
+        ...mapMutations(['showMini', 'showFull', 'play', 'pause', 'showPlayList', 'addToLatelyList']),
+        ...mapActions(['changeSong'])
       },
       computed:{
         getRatio(){
           return this.audioCurrentTime / this.audioDuration
-        },
-        getModeIcon(){
-          let icon;
-
-          if(this.getMode == 'normal'){
-            icon = 'icon-sequence'
-          }else if(this.getMode == 'loop'){
-            icon = 'icon-loop'
-          }else{
-            icon = 'icon-random'
-          }
-
-          return icon;
         },
         showCurrentTime(){
           return this._formatTime(this.audioCurrentTime)
@@ -171,9 +165,9 @@
           fullScreen: state => state.Play.fullScreen,
           songList: state => state.Play.songList,
           currentIdx: state => state.Play.currentIdx,
-          showSongList: state => state.Play.showSongList,
+          showSongList: state => state.Play.showSongList
         }),
-        ...mapGetters(['currentSong', 'getMode'])
+        ...mapGetters(['currentSong'])
       },
       watch:{
         currentSong(song, oldSong){
