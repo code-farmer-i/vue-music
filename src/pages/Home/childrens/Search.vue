@@ -7,25 +7,29 @@
         <i v-show="queryStr" class="icon-dismiss" @click="clear"></i>
       </div>
     </div>
-    <div class="quickSearch" v-show="!queryStr.length">
-      <div class="hot-key">
-        <div class="title">热门搜索</div>
-        <div class="hot-key-wrap">
-          <div class="item" v-for="item in hotKey" @click="setQuery('hotkey', item.k)">{{item.k}}</div>
-        </div>
-      </div>
-      <div class="search-history" v-show="searchHistory.length">
-        <h1 class="title">
-          <span class="text">搜索历史</span>
-          <span class="clear" @click="clearQuery">
+    <div class="quickSearch" v-show="!queryStr.length" ref="scrollView2">
+      <scroll :data="searchHistory" ref="scroll2">
+        <div>
+          <div class="hot-key">
+            <div class="title">热门搜索</div>
+            <div class="hot-key-wrap">
+              <div class="item" v-for="item in hotKey" @click="setQuery('hotkey', item.k)">{{item.k}}</div>
+            </div>
+          </div>
+          <div class="search-history" v-show="searchHistory.length">
+            <h1 class="title">
+              <span class="text">搜索历史</span>
+              <span class="clear" @click="clearQuery">
             <i class="icon-clear"></i>
           </span>
-        </h1>
-        <div v-for="(key, index) in searchHistory" class="search-item">
-          <div class="search-key">{{key}}</div>
-          <i class="icon-delete" @click="deleteQuery(index)"></i>
+            </h1>
+            <div v-for="(key, index) in searchHistory" class="search-item">
+              <div class="search-key" @click="setQuery('history', key)">{{key}}</div>
+              <i class="icon-delete" @click="deleteQuery(index)"></i>
+            </div>
+          </div>
         </div>
-      </div>
+      </scroll>
     </div>
     <div class="search-scroll" v-show="queryStr.length" ref="scrollView">
       <scroll ref="scroll" :data="songList">
@@ -54,6 +58,7 @@
     import createSinger from '../../../util/createSinger'
     import createSong from '../../../util/createSong'
     import searchHistory from '../../../util/searchHistory'
+    import API from '../../../util/ApiServer'
 
     export default{
       created(){
@@ -68,34 +73,34 @@
           songList:[],
           totalNum: 0,
           pageNum: 1,
-          searchHistory: Object.freeze(searchHistory.getQuery()),
+          searchHistory: Object.freeze(JSON.parse(localStorage.getItem('queryHistory'))),
           noResult: false,
           searching: false,
         }
       },
       methods:{
         async getHotKey(){
-          const result = await this.$store.dispatch('getHotKey');
+          const result = await API.getHotKey();
 
           this.hotKey = result.hotkey.slice(0, 9);
         },
         async getSearch(){
           this.searching = !this.songList.length ? true : false
 
-          const result = await this.$store.dispatch('getSerch', this.queryData)
+          const result = await API.getSerch(this.queryData)
 
           this.searching = false;
           this.noResult = result.zhida.type == 0 && result.song.totalnum == 0;
-          this.singer = Object.freeze(result.zhida);
+          this.singer = result.zhida.type == 2 ? Object.freeze(result.zhida) : {};
           this.songList = Object.freeze(result.song.list);
         },
         setQuery(type, k){
           //若是点击热搜则直接搜索，如果是用户输入则进行延迟搜索
-          if(type == 'hotkey'){
+          if(type == 'input'){
+            this.querySetTimeout()
+          }else{
             this.queryStr = k;
             this.getSearch()
-          }else{
-            this.querySetTimeout()
           }
         },
         querySetTimeout(){
@@ -122,22 +127,35 @@
           this.$router.push({name: 'Singer', params:{singerId: singerObj.id}})
         },
         addHistory(){
-          searchHistory.addQuery(this.queryStr);
+          const s = [...this.searchHistory];
 
-          this.searchHistory = Object.freeze(searchHistory.getQuery());
+          s.unshift(this.queryStr);
+
+          this.searchHistory = Object.freeze([...new Set(s)]);
         },
         deleteQuery(idx){
-          searchHistory.deleteQuery(idx);
+          const s = [...this.searchHistory];
 
-          this.searchHistory = Object.freeze(searchHistory.getQuery());
+          Array.prototype.splice.call(s, idx, 1);
+
+          this.searchHistory = Object.freeze(s);
         },
         clearQuery(){
-          searchHistory.clearQuery();
-
           this.searchHistory = [];
         },
         clear(){
           this.queryStr = ''
+        },
+        refreshScrollView(){
+          if(this.MiniShow){
+            this.$refs.scrollView.style.bottom = '60px'
+            this.$refs.scrollView2.style.bottom = '60px'
+
+            this.$nextTick(()=>{
+              this.$refs.scroll.refresh()
+              this.$refs.scroll2.refresh()
+            })
+          }
         },
         ...mapActions(['playList', 'addSongToList']),
         ...mapMutations(['setSinger'])
@@ -148,6 +166,18 @@
         },
         hasNextPage(){
           return this.totalNum > pageNum * 20
+        }
+      },
+      watch:{
+        searchHistory(newVal){
+          localStorage.setItem('queryHistory', JSON.stringify(newVal))
+        },
+        queryStr(newVal){
+          if(newVal == ''){
+            this.$nextTick(()=>{
+              this.$refs.scroll2.refresh()
+            })
+          }
         }
       },
       components:{
@@ -179,7 +209,7 @@
       .box
         flex: 1
         margin: 0 5px
-        line-height: 26px
+        line-height: 18px
         background: $color-highlight-background
         color: $color-text
         font-size: $font-size-medium
@@ -191,20 +221,27 @@
         font-size: 16px
         color: $color-background
         extend-click-after()
-  .hot-key
-    margin 0 20px 20px
-    .title
-      margin-bottom: 20px;
-      font-size: 14px;
-      color $color-text-l
-    .item
-      display inline-block
-      padding 5px 10px
-      margin 0 20px 10px 0
-      border-radius: 6px
-      background #333
-      font-size 14px
-      color $color-text-l
+  .quickSearch
+    position fixed
+    top 170px
+    left 0
+    bottom 0
+    width 100%
+    overflow hidden
+    .hot-key
+      margin 0 20px 20px
+      .title
+        margin-bottom: 20px;
+        font-size: 14px;
+        color $color-text-l
+      .item
+        display inline-block
+        padding 5px 10px
+        margin 0 20px 10px 0
+        border-radius: 6px
+        background #333
+        font-size 14px
+        color $color-text-l
   .search-scroll
     position fixed
     top 170px
@@ -254,10 +291,12 @@
       display flex
       align-items center
       height 40px
+      line-height 40px
       font-size 16px
       color $color-text-l
       .search-key
         flex 1
+        height 100%
       .icon-delete
         position relative
         font-size 12px

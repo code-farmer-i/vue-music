@@ -52,7 +52,10 @@
           this.scroll && this.scroll.scrollToElement.apply(this.scroll, arg);
         },
         refresh(){
-          this.scroll && this.scroll.refresh()
+          if(this.scroll) {
+            this.scroll.refresh()
+            this.scroll.scrollTo(0, 0)
+          }
         }
       },
       watch:{

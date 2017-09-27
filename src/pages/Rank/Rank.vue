@@ -29,6 +29,8 @@
   import Scroll from 'components/common/Scroll/Scroll'
   import {refreshScroll} from '../../Mixin/Mixin'
   import rank from "../../util/api/rank";
+  import createSong from '../../util/createSong'
+  import API from '../../util/ApiServer'
 
   export default{
     name: 'Rank-Details',
@@ -52,19 +54,14 @@
     },
     methods:{
       async getRankDetails(rankId){
-        const rankDetails = await this.$store.dispatch('getRankListDetails', rankId)
+        const rankDetails = await API.getRankListDetails(rankId)
 
         this.songList = Object.freeze(rankDetails.songlist)
         this.rankInfo = Object.freeze(rankDetails.topinfo);
       },
       _playList(currentIdx){
         const songList = this.songList.map((val)=>{
-          return {
-            songId: val.data.songid,
-            songName: val.data.songname,
-            singerName: val.data.singer[0].name,
-            discImg: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${val.data.albummid}.jpg?max_age=2592000`
-          }
+          return new createSong(val.data)
         })
 
         this.playList({songList: Object.freeze(songList), currentIdx})

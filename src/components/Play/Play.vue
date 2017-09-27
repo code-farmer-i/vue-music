@@ -56,7 +56,7 @@
             <img width="40" height="40" :src="currentSong.discImg" :class="[playing ? 'play' : 'pause']">
           </div>
           <div class="text">
-            <h2 class="name" v-html="currentSong.songName"></h2>
+            <h2 class="name" v-html="currentSong.name"></h2>
             <p class="desc" v-html="currentSong.singerName"></p>
           </div>
           <div class="control">
@@ -475,33 +475,41 @@
     }
     @keyframes title-enter{
       0%{
+        opacity 0
         transform translate3d(0, -100%, 0)
       }
       100%{
+        opacity 1
         transform translate3d(0, 0, 0)
       }
     }
     @keyframes title-leave{
       0%{
+        opacity 1
         transform translate3d(0, 0, 0)
       }
       100%{
+        opacity 0
         transform translate3d(0, -100%, 0)
       }
     }
     @keyframes bottom-enter{
       0%{
+        opacity 0
         transform translate3d(0, 150%, 0)
       }
       100%{
+        opacity 1
         transform translate3d(0, 0, 0)
       }
     }
     @keyframes bottom-leave{
       0%{
+        opacity 1
         transform translate3d(0, 0, 0)
       }
       100%{
+        opacity 0
         transform translate3d(0, 150%, 0)
       }
     }

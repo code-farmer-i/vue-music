@@ -32,6 +32,7 @@
   import {refreshScroll} from '../../../Mixin/Mixin'
   import {mapMutations, mapState} from 'vuex'
   import createSinger from '../../../util/createSinger'
+  import API from '../../../util/ApiServer'
 
   let touch = {};
   const sortItemHeight = 18;
@@ -77,7 +78,7 @@
         this.$router.push({name: 'Singer', params:{singerId: singerObj.id}})
       },
       async getSingerList(){
-        const result = await this.$store.dispatch('getSingerList');
+        const result = await API.getSingerList();
 
         this.formatSingerList(result.list)
       },

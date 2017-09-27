@@ -24,6 +24,7 @@
     import Scroll from 'components/common/Scroll/Scroll'
     import Loading from 'components/common/Loading/Loading'
     import {refreshScroll} from '../../../Mixin/Mixin'
+    import API from '../../../util/ApiServer'
 
     export default{
       data(){
@@ -37,7 +38,7 @@
       mixins:[refreshScroll],
       methods:{
         async getRankList(){
-          const result = await this.$store.dispatch('getRankList')
+          const result = await API.getRankList()
 
           this.rankList = Object.freeze(result.topList)
         },

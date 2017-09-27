@@ -36,6 +36,7 @@
   import Loading from 'components/common/Loading/Loading'
   import Slider from 'components/common/Slider/Slider'
   import Scroll from 'components/common/Scroll/Scroll'
+  import API from '../../../util/ApiServer'
 
   export default {
     data() {
@@ -49,7 +50,7 @@
     },
     methods: {
       async getRecommend(){
-        const result = await this.$store.dispatch('getRecommend')
+        const result = await API.getRecommend()
 
         this.recommends = Object.freeze(result.slider);
       }

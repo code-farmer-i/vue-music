@@ -21,7 +21,11 @@ export default {
     state.currentIdx = currentIdx;
   },
   addSong(state, song){
-    state.songList.unshift(song)
+    const newSongList = [...state.songList];
+
+    newSongList.unshift(song)
+
+    state.songList = newSongList;
   },
   changeMode(state){
     if(state.mode == MODE_TYPE.length - 1){

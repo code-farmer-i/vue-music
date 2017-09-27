@@ -23,6 +23,7 @@
     import Scroll from 'components/common/Scroll/Scroll'
     import {refreshScroll} from '../../Mixin/Mixin'
     import createSong from '../../util/createSong'
+    import API from '../../util/ApiServer'
 
     export default{
       name: 'Singer',
@@ -45,7 +46,7 @@
       },
       methods:{
         async getSingerDetails(singerId){
-          const singerDetails = await this.$store.dispatch('getSingerDetails', singerId)
+          const singerDetails = await API.getSingerDetails(singerId)
 
           this.songList = Object.freeze(singerDetails.list)
         },
