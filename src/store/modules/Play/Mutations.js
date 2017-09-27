@@ -14,6 +14,12 @@ export default {
   showFull(state){
     state.fullScreen = true;
   },
+  showPlayList(state){
+    state.showSongList = true;
+  },
+  hidePlayList(state){
+    state.showSongList = false;
+  },
   setSongList(state, songList){
     state.songList = songList;
   },
@@ -26,6 +32,15 @@ export default {
     newSongList.unshift(song)
 
     state.songList = newSongList;
+  },
+  removeSong(state, idx){
+    const newSongList = [...state.songList];
+
+    Array.prototype.splice.call(newSongList, idx, 1);
+
+    //若删除的歌曲索引小于当前播放歌曲 随数组长度变化 当前播放歌曲的索引-1
+    idx < state.currentIdx && state.currentIdx--;
+    state.songList = newSongList
   },
   changeMode(state){
     if(state.mode == MODE_TYPE.length - 1){

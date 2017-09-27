@@ -71,17 +71,18 @@
             </div>
 
           </div>
-          <div class="control" @click.stop="showPlaylist">
+          <div class="control" @click.stop="showPlayList">
             <i class="icon-playlist"></i>
           </div>
         </div>
       </transition>
-
+      <play-list v-show="showSongList"></play-list>
       <audio ref="audioEl"></audio>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import PlayList from '../PlayList/PlayList'
     import {mapState, mapActions, mapMutations, mapGetters} from 'vuex'
 
     export default {
@@ -139,7 +140,7 @@
           this.audioEl.src = `http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`;
           this.audioEl.play();
         },
-        ...mapMutations(['showMini', 'showFull', 'play', 'pause', 'changeSong', 'changeMode'])
+        ...mapMutations(['showMini', 'showFull', 'play', 'pause', 'changeSong', 'changeMode', 'showPlayList'])
       },
       computed:{
         getRatio(){
@@ -170,12 +171,15 @@
           fullScreen: state => state.Play.fullScreen,
           songList: state => state.Play.songList,
           currentIdx: state => state.Play.currentIdx,
+          showSongList: state => state.Play.showSongList,
         }),
         ...mapGetters(['currentSong', 'getMode'])
       },
       watch:{
-        currentSong(song){
-          this._playSong(song.id)
+        currentSong(song, oldSong){
+          if(song.id != oldSong.id){
+            this._playSong(song.id)
+          }
         },
         mode(){
           if(this.getMode == 'loop'){
@@ -191,6 +195,9 @@
             this.audioEl.pause()
           }
         }
+      },
+      components:{
+        PlayList
       }
     }
 </script>

@@ -4,5 +4,6 @@ export default {
   songList: [],
   currentIdx: -1,
   fullScreen: false,
-  MiniShow: false
+  MiniShow: false,
+  showSongList: false
 }

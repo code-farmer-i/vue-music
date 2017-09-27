@@ -27,7 +27,6 @@
         }
       },
       mounted(){
-        console.log('scroll')
         setTimeout(()=>{
           this.initScroll()
         }, 20)
@@ -56,6 +55,9 @@
             this.scroll.refresh()
             this.scroll.scrollTo(0, 0)
           }
+        },
+        recalculate(){
+          this.scroll && this.scroll.refresh()
         }
       },
       watch:{
