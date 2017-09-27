@@ -73,7 +73,11 @@
           songList:[],
           totalNum: 0,
           pageNum: 1,
-          searchHistory: Object.freeze(JSON.parse(localStorage.getItem('queryHistory'))),
+          searchHistory: (()=>{
+            let s = localStorage.getItem('queryHistory');
+
+            return s ? Object.freeze(JSON.parse(s)) : []
+          })(),
           noResult: false,
           searching: false,
         }

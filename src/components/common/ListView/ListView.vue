@@ -10,6 +10,7 @@
         </div>
       </div>
     </scroll>
+    <div class="no-result" v-show="!data.length">暂无歌曲</div>
   </div>
 </template>
 
