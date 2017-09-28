@@ -68,7 +68,7 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
-  @import "../../assets/stylus/variable.styl"
+  @import "../../assets/stylus/variable2.styl"
   @import "../../assets/stylus/mixin.styl"
 
   .play-list
@@ -86,8 +86,8 @@
       bottom 0
       left 0
       width 100%
-      background-color $color-highlight-background
-      color $color-text-l
+      background-color #f9f9f9
+      color $color-font-d
       font-size 14px
       .list-head
         display flex
@@ -96,13 +96,14 @@
         .mode-icon
           margin-right 10px
           font-size 30px
-          color $color-theme-d
+          color $color-gray-d2
         .mode-type
           flex 1
       .list-content
         max-height 240px
         overflow hidden
         .item
+          position relative
           display flex
           height 40px
           align-items center
@@ -112,31 +113,32 @@
             font-size 12px
           .playing
             width 20px
-            color $color-theme-d
+            color $color-theme
           .song-info
             flex 1
-            color $color-text-d
             no-wrap()
           .icon-not-favorite, .icon-favorite, .icon-delete
             position relative
-            color $color-theme
+            color $color-gray-d2
             padding 4px
           .icon-not-favorite, .icon-favorite
             margin-right 10px
+          .icon-favorite
+            color $color-favorite
   .play-list-enter-active.play-list{
-    animation: list-active .3s forwards
+    animation: list-active .25s forwards
   }
 
   .play-list-enter-active .play-list-wrap{
-    animation: wrap-active .3s forwards
+    animation: wrap-active .25s forwards
   }
 
   .play-list-leave-active.play-list{
-    animation: list-active .3s forwards reverse
+    animation: list-active .25s forwards reverse
   }
 
   .play-list-leave-active .play-list-wrap{
-    animation: wrap-active .3s forwards reverse
+    animation: wrap-active .25s forwards reverse
   }
 
   @keyframes list-active{

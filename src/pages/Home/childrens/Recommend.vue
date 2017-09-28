@@ -1,34 +1,21 @@
 <template>
-  <div class="recommend" ref="recommend">
-    <scroll ref="scroll" class="recommend-content" :data="discList">
+  <div class="recommend" ref="scrollView">
+    <scroll ref="scroll" class="recommend-content" :data="bannerList">
       <div>
         <div class="slider-wrapper">
-          <slider v-if="recommends.length">
-            <div v-for="item in recommends" class="slider-item">
+          <slider v-if="bannerList.length">
+            <div v-for="item in bannerList" class="slider-item">
               <a :href="item.linkUrl">
                 <img class="needsclick" :src="item.picUrl">
               </a>
             </div>
           </slider>
         </div>
-        <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
-          <ul>
-            <li @click="selectItem(item)" v-for="item in discList" class="item">
-              <div class="icon">
-                <img width="60" height="60" v-lazy="item.imgurl">
-              </div>
-              <div class="text">
-                <h2 class="name" v-html="item.creator.name"></h2>
-                <p class="desc" v-html="item.dissname"></p>
-              </div>
-            </li>
-          </ul>
-        </div>
+        <flex-list title="歌单推荐" ref="recomPlaylist" imgName="cover" msgName="title" @complete="refreshScroll" @itemClick="toRecommendCd"></flex-list>
+        <flex-list title="新歌首发" ref="newSongList" imgName="discImg" msgName="title" @complete="refreshScroll" @itemClick="addSongToList"></flex-list>
       </div>
-      <loading v-show="!discList.length"></loading>
+      <loading v-show="!recommends"></loading>
     </scroll>
-    <router-view></router-view>
   </div>
 </template>
 
@@ -37,40 +24,73 @@
   import Slider from 'components/common/Slider/Slider'
   import Scroll from 'components/common/Scroll/Scroll'
   import API from '../../../util/ApiServer'
+  import FlexList from 'components/FlexList/FlexList'
+  import {refreshScroll} from '../../../Mixin/Mixin'
+  import createSong from '../../../util/createSong2'
+  import {mapActions, mapMutations} from 'vuex'
 
   export default {
     data() {
       return {
-        recommends: [],
-        discList: []
+        bannerList: [],
+        recommends: false
       }
     },
+    mixins: [refreshScroll],
     created() {
       this.getRecommend();
+      this.getRecommendList();
     },
     methods: {
       async getRecommend(){
         const result = await API.getRecommend()
 
-        this.recommends = Object.freeze(result.slider);
-      }
+        this.bannerList = Object.freeze(result.slider);
+      },
+      async getRecommendList(){
+        const result = await API.getRecommendList()
+        let newSongList = result.new_song.data.song_list;
+
+        newSongList = newSongList.map((song)=>{
+            return new createSong(song)
+        })
+
+        this.recommends = true;
+        this.$refs.recomPlaylist.formatData(result.recomPlaylist.data.v_hot);
+        this.$refs.newSongList.formatData(newSongList);
+      },
+      toRecommendCd(cd){
+        this.setRecommendCd({
+          name: cd.title,
+          bg: cd.cover
+        })
+
+        this.$router.push({name: 'RecommendCd', params: {disstid: cd.content_id}})
+      },
+      refreshScroll(){
+        this.$refs.scroll.refresh()
+      },
+      ...mapMutations(['setRecommendCd']),
+      ...mapActions(['addSongToList'])
     },
     components: {
       Loading,
       Slider,
-      Scroll
+      Scroll,
+      FlexList
     }
   }
 </script>
 
 <style scoped lang="stylus" type="text/stylus">
-  @import "../../../assets/stylus/variable.styl";
+  @import "../../../assets/stylus/variable2.styl";
 
   .recommend
     position fixed
     width 100%
     top 88px
     bottom 0
+    background-color $color-gray-l
   .recommend-content
     height 100%
     overflow hidden
@@ -87,8 +107,8 @@
       height 65px
       line-height 65px
       text-align center
-      font-size $font-size-medium
-      color $color-theme
+      font-size $font-size-medium-x
+      color $color-font-d
     .item
       display flex
       box-sizing border-box

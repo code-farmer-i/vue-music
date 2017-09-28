@@ -77,7 +77,7 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
-  @import "../../assets/stylus/variable.styl";
+  @import "../../assets/stylus/variable2.styl";
   @import "../../assets/stylus/mixin.styl";
 
   .rank-details
@@ -87,7 +87,7 @@
     bottom 0
     width 100%
     max-width 500px
-    background-color #222
+    background-color $color-bg-gray-m
     transform translateX(-50%)
     transform-style preserve-3d
     z-index 99
@@ -102,27 +102,29 @@
       bottom 0
       width  100%
       .song-list-wrap
-        padding 20px 30px
         .song-wrap
+          padding 10px 20px
+          position relative
           display flex
           align-items center
-          padding 10px 0
           font-size 14px
           line-height 20px
+          border-bottom-1px($color-border-d)
+          &:last-child::after
+            border 0
           .song-name
             text-overflow ellipsis
             overflow hidden
             white-space nowrap
-            color #fff
+            color $color-font-d
           .song-disc
             text-overflow ellipsis
             overflow hidden
             white-space nowrap
             margin-top 4px
-            color hsla(0,0%,100%,.3)
+            color $color-font-gray
         .rank-index
           margin-right 30px
-          color $color-theme
           font-size 18px
           .icon
             display inline-block
@@ -133,6 +135,7 @@
             display inline-block
             width 25px
             text-align center
+            color $color-font-gray
           .icon0
             bg-image('first')
           .icon1

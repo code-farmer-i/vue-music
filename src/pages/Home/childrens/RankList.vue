@@ -9,7 +9,7 @@
             <ul class="songlist">
               <li class="song" v-for="(song,index) in item.songList">
                 <span>{{index + 1}}</span>
-                <span>{{song.songname}}-{{song.singername}}</span>
+                <span>{{song.songname}} - <span class="singer-name">{{song.singername}}</span></span>
               </li>
             </ul>
           </li>
@@ -54,7 +54,7 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
-    @import "../../../assets/stylus/variable";
+    @import "../../../assets/stylus/variable2";
     @import "../../../assets/stylus/mixin";
 
     .rank-list
@@ -62,6 +62,7 @@
       top 88px
       bottom 0
       width 100%
+      background-color $color-gray-l
       .item
         display: flex
         margin: 0 20px
@@ -81,12 +82,14 @@
           padding: 0 20px
           height: 100px
           overflow: hidden
-          background: $color-highlight-background
-          color: $color-text-d
+          background: $color-bg
+          color: $color-font-d
           font-size: $font-size-small
           .song
             no-wrap()
             line-height: 26px
+            .singer-name
+              color $color-font-gray
       .loading-container
         position: absolute
         width: 100%

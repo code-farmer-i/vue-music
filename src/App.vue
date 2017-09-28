@@ -2,7 +2,7 @@
   <div>
     <div id="app" @touchmove.prevent>
       <transition :name="transitionName">
-        <keep-alive :exclude="['Singer', 'Rank-Details']">
+        <keep-alive :exclude="['Singer', 'Rank-Details', 'RecommendCd']">
           <router-view class="router-el"></router-view>
         </keep-alive>
       </transition>

@@ -16,8 +16,9 @@
     }
 </script>
 
-<style lang="stylus" type="text/stylus">
+<style lang="stylus" type="text/stylus" scoped>
   @import "../../assets/stylus/mixin.styl";
+  @import "../../assets/stylus/variable2.styl";
 
   .top-bar
     position absolute
@@ -39,7 +40,7 @@
       left 10px
       top 50%
       font-size 22px
-      color #ffcd32
+      color $color-gray-d2
       transform translateY(-50%)
       extend-click-after()
 </style>

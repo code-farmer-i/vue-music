@@ -29,7 +29,7 @@
       bottom 0
       width 100%
       max-width 500px
-      background-color #222
+      background-color #fff
       transform translateX( -50% )
       transform-style preserve-3d
 </style>

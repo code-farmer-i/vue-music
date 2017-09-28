@@ -7,7 +7,9 @@
           <div class="item" :class="{'active': !toggleTab}" @click="toggleTab = !toggleTab">最近听的</div>
         </div>
       </div>
-      <list-view :data="toggleTab ? favoriteList : latelyList" @itemClick="addSongToList"></list-view>
+      <div class="list-wrap">
+        <list-view :data="toggleTab ? favoriteList : latelyList" @itemClick="addSongToList"></list-view>
+      </div>
     </div>
 </template>
 
@@ -38,7 +40,7 @@
 
 <style lang="stylus" type="text/stylus">
   @import "../../assets/stylus/mixin.styl";
-  @import "../../assets/stylus/variable.styl";
+  @import "../../assets/stylus/variable2.styl";
 
   .User
     position fixed
@@ -47,42 +49,50 @@
     bottom 0
     width 100%
     max-width 500px
-    background-color #222
+    background-color $color-bg
     transform translateX( -50% )
     transform-style preserve-3d
     z-index 2
     .top-bar
-      padding 10px 0
+      padding 8px 0
       position relative
       text-align center
       white-space nowrap
       font-size 18px
-      color #fff
+      color $color-theme
+      background-color $color-theme
       .tab
         display flex
         align-items center
         margin 0 auto
-        width 240px
-        border 1px solid #333
+        width 160px
+        border 1px solid $color-bg
         box-sizing border-box
-        border-radiu 5px
+        border-radius 4px
         overflow hidden
         .item
           display block
           width 50%
-          height 34px
-          line-height 34px
-          color #fff
+          height 30px
+          line-height 30px
+          color $color-font
           text-align center
           font-size 14px
+          background-color $color-theme
           &.active
-            background-color $color-highlight-background
+            background-color $color-bg
+            color $color-theme
       .icon-back
         position absolute
         left 10px
         top 50%
         font-size 22px
-        color #ffcd32
+        color $color-font
         transform translateY(-50%)
         extend-click-after()
+    .list-wrap
+      position absolute
+      top 48px
+      bottom 0
+      width 100%
 </style>

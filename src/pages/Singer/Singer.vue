@@ -72,6 +72,9 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
+  @import "../../assets/stylus/variable2.styl";
+  @import "../../assets/stylus/mixin.styl";
+
   .singer
     position fixed
     top 0
@@ -79,10 +82,10 @@
     bottom 0
     width 100%
     max-width 500px
-    background-color #222
     transform translateX(-50%)
     transform-style preserve-3d
     z-index 99
+    background-color $color-bg-gray-m
     .singer-photo
       position relative
       height 40%
@@ -102,22 +105,25 @@
       bottom 0
       width  100%
       .song-list-wrap
-        padding 20px 30px
         .song-wrap
-          padding 10px 0
+          padding 10px 20px
+          position relative
           font-size 14px
           line-height 20px
+          border-bottom-1px($color-border-d)
+          &:last-child::after
+            border 0
           .song-name
             text-overflow ellipsis
             overflow hidden
             white-space nowrap
-            color #fff
+            color $color-font-d
           .song-disc
             text-overflow ellipsis
             overflow hidden
             white-space nowrap
             margin-top 4px
-            color hsla(0,0%,100%,.3)
+            color $color-font-gray
 
 
 

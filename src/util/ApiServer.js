@@ -2,22 +2,20 @@ import API from './api'
 import axios from 'axios'
 import jsonp from './myJsonp'
 
-const apiFactory = ({url, params, method, dataName})=>{
-  console.log(url, params, method)
+
+const apiFactory = ({url, params, method, dataName, options})=>{
   const request = method === 'jsonp' ?
-    jsonp(url, params, {param: 'jsonpCallback'})
+    jsonp(url, params, options ? options : {param: 'jsonpCallback'})
     : axios({
       method: method,
       url: url,
-      data: params
+      data: params || ''
     })
 
   return new Promise((resolve)=>{
     request
     .then((res)=>{
-      if(res.code == 0){
-        resolve(res[dataName] || res.data || res)
-      }
+      resolve(res[dataName] || res.data || res)
     })
   })
 }
@@ -25,6 +23,9 @@ const apiFactory = ({url, params, method, dataName})=>{
 export default{
   getRecommend(){
     return apiFactory(API.Recommend())
+  },
+  getRecommendList(){
+    return apiFactory(API.RecommendList())
   },
   getSingerList(){
     return apiFactory(API.Singer())
@@ -44,4 +45,7 @@ export default{
   getSerch(params){
     return apiFactory(API.Serch(params))
   },
+  getCdInfo(disstid){
+    return apiFactory(API.cdInfo(disstid))
+  }
 }

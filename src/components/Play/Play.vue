@@ -79,7 +79,6 @@
         </div>
       </transition>
       <play-list v-show="showSongList"></play-list>
-      <audio ref="audioEl"></audio>
     </div>
 </template>
 
@@ -101,7 +100,7 @@
       mixins:[favoriteMixin, ModeMixin],
       mounted(){
         this.$nextTick(()=>{
-          this.audioEl = this.$refs.audioEl;
+          this.audioEl = new Audio();
           this.progressWidth = this.$refs.progress.clientWidth;
 
           this.audioEl.addEventListener('ended', ()=>{
@@ -171,7 +170,8 @@
       },
       watch:{
         currentSong(song, oldSong){
-          if(song.id != oldSong.id){
+          //若当首正在播放 则不切歌 除非当期列表只有一首
+          if(song.id != oldSong.id || this.songList.length == 1){
             this._playSong(song.id)
           }
         },
@@ -197,7 +197,7 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
-    @import "../../assets/stylus/variable.styl";
+    @import "../../assets/stylus/variable2.styl";
     @import "../../assets/stylus/mixin.styl";
 
     .normal-player
@@ -248,7 +248,7 @@
             position absolute
             left 10px
             top 50%
-            color $color-theme
+            color $color-gray-d2
             font-size 22px
             transform translateY(-50%) rotate(-90deg)
         .singerName
@@ -257,15 +257,22 @@
           color #fff
           z-index 2
       .player-cd
+        padding-top 76%
         position absolute
-        left 10%
+        left 12%
         top 70px
-        width 80%
+        width 76%
         z-index 2
-        border 10px solid hsla(0,0%,100%,.1)
         border-radius 50%
         overflow  hidden
         .cd-wrap
+          position absolute
+          top 0
+          left 0
+          right 0
+          bottom 0
+          border-radius 50%
+          border 10px solid hsla(0,0%,100%,.1)
           animation-duration 20s
           animation-timing-function linear
           animation-iteration-count infinite
@@ -279,7 +286,7 @@
         width 100%
         height 100%
         opacity .6
-        filter blur(20px)
+        filter blur(50px)
       &.enter .bottom
         animation-delay .3s
         animation-name bottom-enter
@@ -305,8 +312,8 @@
             .bar-inner
               position relative
               top 13px
-              height 4px
-              background rgba(0, 0, 0, 0.3)
+              height 2px
+              background $color-gray
               .progress
                 position absolute
                 height 100%
@@ -351,43 +358,52 @@
               color: $color-theme-d
             i
               font-size 30px
+              &.icon-not-favorite, &.icon-favorite, &.icon-sequence, &.icon-loop, &.icon-random
+                font-size 26px
           .i-left
             text-align right
           .i-center
             padding 0 20px
             text-align center
             i
-              font-size 40px
+              font-size 48px
           .i-right
             text-align left
+          .icon-not-favorite
+            color $color-gray-d2
           .icon-favorite
-            color $color-sub-theme
+            color $color-favorite
     .mini-player
+      max-width 500px
       display flex
       align-items center
       position fixed
-      left 0
+      left 50%
       bottom 0
+      transform translateX(-50%)
       z-index 180
       width 100%
       height 60px
-      background $color-highlight-background
+      background linear-gradient(top,#f9f9f9,#f3f3f3)
+      border-top-1px($color-border-d)
       &.mini-enter-active, &.mini-leave-active
         transition all .4s
       &.mini-enter, &.mini-leave-to
         opacity 0
       .progress-circle
         position relative
-        width 32px
-        height 32px
+        width 36px
+        height 36px
+        background-color $color-theme
+        border-radius 50%
         .circle-item
           position absolute
-          top 0
-          left 0
+          top 2px
+          left 2px
           width 32px
           height:32px
           border-radius 50%
-          background-color rgba(255,205,49,.5)
+          background-color #f9f9f9
           .play-icon
             position absolute
             top 11px
@@ -395,39 +411,47 @@
             z-index 3
             width 10px
             height 10px
-            background url(./play-icon.png) no-repeat center/cover
-            opacity .5
+            background url(play.png) no-repeat center/cover
             &.play
               width 12px
               height 12px
               top 10px
               left 10px
-              background-image url(./pause.png)
+              background-image url(pause.png)
           .inner-circle
             position absolute
-            top 3px
-            left 3px
-            width 26px
-            height:26px
+            top 2px
+            left 2px
+            width 28px
+            height 28px
             border-radius 50%
             z-index 2
-            background-color #333
+            background #f9f9f9
           .circle, .circle-fill
             position absolute
-            top 0
-            left 0
-            width 32px
-            height 32px
+            top -1px
+            left -1px
+            width 34px
+            height 34px
             border-radius 50%
-            background-color rgb(255,205,49)
-            clip rect(0 16px 32px 0)
+            background-color $color-theme
+            clip rect(0 17px 34px 0)
           .circle-fill
             z-index 2
           .circle-fill.gt50
-            background-color rgb(255,205,49)
+            width 32px
+            height 32px
+            top 0
+            left 0
+            background-color $color-theme
             transform rotate(180deg)
+            clip rect(0 16px 32px 0)
           .circle-fill.lt50
-            background-color rgb(153,128,50)
+            width 32px
+            height 32px
+            top 0
+            left 0
+            background-color #f9f9f9
             clip rect(0 16px 32px 0)
       .icon
         flex 0 0 40px
@@ -450,11 +474,11 @@
           margin-bottom 2px
           no-wrap()
           font-size $font-size-medium
-          color $color-text
+          color $color-font-d
         .desc
           no-wrap()
           font-size $font-size-small
-          color $color-text-d
+          color $color-font-d
       .control
         flex 0 0 30px
         width 30px

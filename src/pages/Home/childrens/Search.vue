@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="Search">
     <div class="search-box-wrapper">
       <div class="search-box">
         <i class="icon-search"></i>
@@ -45,13 +45,14 @@
         </div>
       </scroll>
       <!--<loading v-show="searching" :title="''"></loading>-->
-      <div class="no-result" v-show="noResult">暂无搜索结果</div>
+      <no-result msg="暂无结果" v-show="noResult"></no-result>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
     import Scroll from 'components/common/Scroll/Scroll'
+    import NoResult from 'components/common/NoResult/NoResult'
     import Loading from 'components/common/Loading/Loading'
     import {mapActions, mapMutations} from 'vuex'
     import {refreshScroll} from '../../../Mixin/Mixin'
@@ -186,124 +187,127 @@
       },
       components:{
         Scroll,
-        Loading
+        Loading,
+        NoResult
       }
     }
 </script>
 
 <style lang="stylus" type="text/stylus">
 
-  @import "../../../assets/stylus/variable.styl";
+  @import "../../../assets/stylus/variable2.styl";
   @import "../../../assets/stylus/mixin.styl";
 
-  .search-box-wrapper
-    margin: 20px
-    .search-box
-      display: flex
-      align-items: center
-      box-sizing: border-box
-      width: 100%
-      padding: 0 6px
-      height: 40px
-      background: $color-highlight-background
-      border-radius: 6px
-      .icon-search
-        font-size: 24px
-        color: $color-background
-      .box
-        flex: 1
-        margin: 0 5px
-        line-height: 18px
-        background: $color-highlight-background
-        color: $color-text
-        font-size: $font-size-medium
-        outline 0
-        &::placeholder
-          color: $color-text-d
-      .icon-dismiss
-        position relative
-        font-size: 16px
-        color: $color-background
-        extend-click-after()
-  .quickSearch
-    position fixed
-    top 170px
-    left 0
-    bottom 0
-    width 100%
-    overflow hidden
-    .hot-key
-      margin 0 20px 20px
-      .title
-        margin-bottom: 20px;
-        font-size: 14px;
-        color $color-text-l
-      .item
-        display inline-block
-        padding 5px 10px
-        margin 0 20px 10px 0
-        border-radius: 6px
-        background #333
-        font-size 14px
-        color $color-text-l
-  .search-scroll
-    position fixed
-    top 170px
-    left 0
-    bottom 0
-    width 100%
-    overflow hidden
-  .no-result
+  .Search
     position absolute
-    top 50%
-    left 50%
-    transform translate(-50%, -50%)
-    color $color-text-l
-  .search-result
+    top 88px
+    left 0
+    bottom 0
     width 100%
-    padding 0 30px
-    box-sizing border-box
-    font-size 14px
-    color $color-text-d
-    .item
-      padding-bottom 20px
-      display: flex
-      align-items center
-      .icon
-        margin-right 14px
-      .serach-info
-        height 20px
-        line-height 20px
-        no-wrap()
-  .search-history
-    position: relative
-    margin: 0 20px
-    .title
-      display: flex
-      align-items: center
-      height: 40px
-      font-size: $font-size-medium
-      color: $color-text-l
-      .text
-        flex: 1
-      .clear
-        extend-click()
-        .icon-clear
+    background-color $color-bg-gray-l
+    .search-box-wrapper
+      margin: 20px
+      .search-box
+        display: flex
+        align-items: center
+        box-sizing: border-box
+        width: 100%
+        padding: 0 6px
+        height: 40px
+        background: $color-bg-gray-d
+        border-radius: 4px
+        color: $color-font-d
+        .icon-search
+          font-size: 24px
+        .box
+          flex: 1
+          margin: 0 5px
+          line-height: 18px
+          background: $color-bg-gray-d
           font-size: $font-size-medium
-          color: $color-text-d
-    .search-item
-      display flex
-      align-items center
-      height 40px
-      line-height 40px
-      font-size 16px
-      color $color-text-l
-      .search-key
-        flex 1
-        height 100%
-      .icon-delete
-        position relative
-        font-size 12px
-        color $color-text-d
-        extend-click-after()
+          outline 0
+          &::placeholder
+            color: $color-font-gray
+        .icon-dismiss
+          position relative
+          font-size: 16px
+          color: $color-font-gray
+          extend-click-after()
+    .quickSearch
+      position fixed
+      top 170px
+      left 0
+      bottom 0
+      width 100%
+      overflow hidden
+      .hot-key
+        margin 0 20px 20px
+        .title
+          margin-bottom: 20px;
+          font-size: 14px;
+          color $color-font-gray
+        .item
+          display inline-block
+          height 26px
+          line-height 26px
+          padding 0 10px
+          margin 0 20px 10px 0
+          border-radius: 26px
+          border 1px solid $color-border
+          font-size 14px
+          color $color-font-d
+    .search-scroll
+      position fixed
+      top 170px
+      left 0
+      bottom 0
+      width 100%
+      overflow hidden
+    .search-result
+      width 100%
+      padding 0 30px
+      box-sizing border-box
+      font-size 14px
+      color $color-font-d
+      .item
+        padding-bottom 20px
+        display: flex
+        align-items center
+        .icon
+          margin-right 14px
+        .serach-info
+          height 20px
+          line-height 20px
+          no-wrap()
+    .search-history
+      position: relative
+      margin: 0 20px
+      .title
+        display: flex
+        align-items: center
+        height: 40px
+        font-size: $font-size-medium
+        color: $color-font-gray
+        .text
+          flex: 1
+        .clear
+          extend-click()
+          .icon-clear
+            font-size: $font-size-medium
+            color: $color-text-d
+      .search-item
+        display flex
+        align-items center
+        height 40px
+        line-height 40px
+        font-size 16px
+        color $color-font-d
+        .search-key
+          flex 1
+          height 100%
+        .icon-delete
+          position relative
+          font-size 12px
+          color $color-text-d
+          extend-click-after()
 </style>

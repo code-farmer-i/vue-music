@@ -21,19 +21,20 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
-  @import "../../assets/stylus/variable.styl";
+  @import "../../assets/stylus/variable2.styl";
 
   .nav-bar
     display flex
     height 44px
     line-height 44px
     font-size $font-size-medium
+    background-color $color-bg
     .tab-item
       flex 1
       text-align center
       .tab-link
         padding-bottom 5px
-        color $color-text-l
+        color $color-font-d
       &.router-link-active
         .tab-link
           color $color-theme

@@ -186,7 +186,8 @@
 </script>
 
 <style lang="stylus" type="text/stylus">
-  @import "../../../assets/stylus/variable.styl";
+  @import "../../../assets/stylus/variable2.styl";
+  @import "../../../assets/stylus/mixin.styl";
 
   .singer-list
     position fixed
@@ -198,43 +199,44 @@
       width 100%
       height 100%
       overflow hidden
-      .list-group
-        padding-bottom 30px
-        .list-group-title
-          height 30px
-          line-height 30px
-          padding-left 20px
-          font-size $font-size-small
-          color $color-text-l
-          background $color-highlight-background
-        .list-group-item
-          display flex
-          align-items center
-          padding 20px 0 0 30px
-          .avatar
-            width 50px
-            height 50px
-            border-radius 50%
-          .name
-            margin-left 20px
-            color $color-text-l
-            font-size $font-size-medium
+      .list-group-title
+        height 30px
+        line-height 30px
+        padding-left 20px
+        font-size $font-size-small
+        color $color-font-gray
+        background-color $color-bg-gray
+      .list-group-item
+        position relative
+        display flex
+        align-items center
+        padding 10px 0 10px 30px
+        border-bottom-1px($color-border-l)
+        .avatar
+          width 50px
+          height 50px
+          border-radius 50%
+        .name
+          margin-left 20px
+          color $color-font-d
+          font-size $font-size-medium
     .list-shortcut
       position absolute
-      z-index 30
-      right 0
+      z-index 40
+      right 6px
       top 50%
       transform translateY(-50%)
       width 20px
-      paddind 20px 0
+      padding 10px 0
       border-radius 10px
       text-align center
-      background $color-background-d
+      background $color-bg-gray-m
       font-family Helvetica
+      border 1px solid $color-border
       .item
         padding 3px
         line-height 1
-        color $color-text-l
+        color $color-font-gray
         font-size $font-size-small
         &.current
           color $color-theme
