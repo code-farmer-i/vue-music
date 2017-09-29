@@ -13,7 +13,7 @@
 <script type="text/ecmascript-6">
     const ITEM_MARGIN = 8;
     const GROUP_NUM = 3;
-    const MAX_GROUP = 2;
+    const MAX_GROUP = 3;
 
     export default {
       data(){

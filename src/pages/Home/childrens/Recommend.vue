@@ -11,8 +11,8 @@
             </div>
           </slider>
         </div>
-        <flex-list title="歌单推荐" ref="recomPlaylist" imgName="cover" msgName="title" @complete="refreshScroll" @itemClick="toRecommendCd"></flex-list>
-        <flex-list title="新歌首发" ref="newSongList" imgName="discImg" msgName="title" @complete="refreshScroll" @itemClick="addSongToList"></flex-list>
+        <flex-list title="歌单推荐" ref="recomPlaylist" imgName="cover" msgName="title" @complete="refreshScroll" @itemClick="toRecommendCd" v-show="recommends"></flex-list>
+        <flex-list title="新歌首发" ref="newSongList" imgName="discImg" msgName="title" @complete="refreshScroll" @itemClick="addSongToList" v-show="recommends"></flex-list>
       </div>
       <loading v-show="!recommends"></loading>
     </scroll>

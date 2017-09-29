@@ -3,8 +3,8 @@
       <div class="top-bar">
         <i class="icon-back" @click="$router.go(-1)"></i>
         <div class="tab">
-          <div class="item" :class="{'active': toggleTab}" @click="toggleTab = !toggleTab">我喜欢的</div>
-          <div class="item" :class="{'active': !toggleTab}" @click="toggleTab = !toggleTab">最近听的</div>
+          <div class="item" :class="{'active': toggleTab}" @click="toggleTab = true">我喜欢的</div>
+          <div class="item" :class="{'active': !toggleTab}" @click="toggleTab = false">最近听的</div>
         </div>
       </div>
       <div class="list-wrap">

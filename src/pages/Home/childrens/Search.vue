@@ -1,9 +1,9 @@
 <template>
-  <div class="Search">
+  <div class="Search" @touchstart="inpBlur">
     <div class="search-box-wrapper">
       <div class="search-box">
         <i class="icon-search"></i>
-        <input ref="query" class="box" placeholder="搜索歌曲、歌手" v-model="queryStr" v-on:input="setQuery('input')"/>
+        <input ref="query" class="box" placeholder="搜索歌曲、歌手" v-model="queryStr" v-on:input="setQuery('input')" @touchstart.stop/>
         <i v-show="queryStr" class="icon-dismiss" @click="clear"></i>
       </div>
     </div>
@@ -32,7 +32,7 @@
       </scroll>
     </div>
     <div class="search-scroll" v-show="queryStr.length" ref="scrollView">
-      <scroll ref="scroll" :data="songList">
+      <scroll ref="scroll" :data="songList" :pullUpLoad="true" @loadMore="loadMore" refreshType="recalculate">
         <div class="search-result">
           <div v-show="!!singer.singername" class="item" @click="selectSinger(singer)">
             <span class="icon icon-mine"></span>
@@ -42,9 +42,11 @@
             <span class="icon icon-music"></span>
             <div class="serach-info" v-html="`${song.songname} ${song.singer[0].name}`"></div>
           </div>
+          <div class="load-more" v-show="hasNextPage">
+            <loading :title="''"></loading>
+          </div>
         </div>
       </scroll>
-      <!--<loading v-show="searching" :title="''"></loading>-->
       <no-result msg="暂无结果" v-show="noResult"></no-result>
     </div>
   </div>
@@ -74,6 +76,7 @@
           songList:[],
           totalNum: 0,
           pageNum: 1,
+          loadingMore: false,
           searchHistory: (()=>{
             let s = localStorage.getItem('queryHistory');
 
@@ -84,6 +87,15 @@
         }
       },
       methods:{
+        loadMore(){
+          if(this.searching) return
+
+          this.pageNum++;
+          this.getSearch();
+        },
+        inpBlur(){
+          this.$refs.query.blur()
+        },
         async getHotKey(){
           const result = await API.getHotKey();
 
@@ -95,9 +107,10 @@
           const result = await API.getSerch(this.queryData)
 
           this.searching = false;
-          this.noResult = result.zhida.type == 0 && result.song.totalnum == 0;
+          this.totalNum = result.song.totalnum;
+          this.noResult = result.zhida.type == 0 && result.song.totalnum == 0 && this.songList.length == 0;
           this.singer = result.zhida.type == 2 ? Object.freeze(result.zhida) : {};
-          this.songList = Object.freeze(result.song.list);
+          this.songList = this.pageNum == 1 ? Object.freeze(result.song.list) : this.songList.concat(Object.freeze(result.song.list));
         },
         setQuery(type, k){
           //若是点击热搜则直接搜索，如果是用户输入则进行延迟搜索
@@ -170,10 +183,13 @@
           return {'query': this.queryStr, 'page': this.pageNum, 'zhida': 1}
         },
         hasNextPage(){
-          return this.totalNum > pageNum * 20
+          return this.totalNum > this.pageNum * 30
         }
       },
       watch:{
+        hasNextPage(v){
+          console.log(v)
+        },
         searchHistory(newVal){
           localStorage.setItem('queryHistory', JSON.stringify(newVal))
         },
@@ -182,7 +198,13 @@
             this.$nextTick(()=>{
               this.$refs.scroll2.refresh()
             })
+          }else{
+            this.$nextTick(()=>{
+              this.$refs.scroll.refresh()
+            })
           }
+
+          this.pageNum = 1;
         }
       },
       components:{
@@ -269,6 +291,9 @@
       box-sizing border-box
       font-size 14px
       color $color-font-d
+      .load-more
+        position relative
+        height 40px
       .item
         padding-bottom 20px
         display: flex

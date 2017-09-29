@@ -29,7 +29,6 @@
       },
       watch:{
         data(){
-          console.log(this.data)
           this.$nextTick(()=>{
             this.$refs.scroll.refresh();
           })

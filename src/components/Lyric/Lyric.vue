@@ -27,15 +27,9 @@
           lyricCurrentLine: -1
         }
       },
-      props:{
-        audioCurrentTime: {
-          type: Number,
-          default: 0
-        }
-      },
       methods: {
         async getLyric(songmid){
-          if(this.currentLyric) this.currentLyric.stop()
+          this.currentLyric && this.currentLyric.stop()
 
           let result = await API.getLyric(songmid)
           result = result.replace('MusicJsonCallback_lrc(', ' ')
@@ -43,7 +37,9 @@
 
           this.currentLyric = new lyricParse(decodeBase64(result.lyric), this.onLyricLinesChange)
           this.lyric = Object.freeze(this.currentLyric.lines)
+
           this.currentLyric.play()
+          this.$emit('lyricReady')
 
         },
         onLyricLinesChange(lyricCurrentLine){
@@ -59,28 +55,11 @@
           this.$emit('lyricTxtChange', lyricCurrentLine.txt)
         },
         refreshLyric(t){
-          this.currentLyric && this.currentLyric.seek(t * 1000)
-        }
-      },
-      watch:{
-        currentSong(song, oldSong){
-          if(song.id != oldSong.id || this.songList.length == 1){
-            this.getLyric(song.songMid)
-          }
-        },
-        playing(play){
-          if(!play){
-            this.currentLyric && this.currentLyric.togglePlay();
-          }else{
-            this.currentLyric && this.currentLyric.togglePlay();
+          if(this.currentLyric)  {
+            this.currentLyric.seek(t * 1000)
+            console.log('lyric refresh')
           }
         }
-      },
-      computed:{
-        ...mapState({
-          playing: state => state.Play.playing,
-        }),
-        ...mapGetters(['currentSong'])
       },
       components:{
         Scroll

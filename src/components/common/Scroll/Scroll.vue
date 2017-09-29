@@ -24,6 +24,14 @@
         listenScroll:{
           type: Boolean,
           default: false
+        },
+        pullUpLoad: {
+          type: null,
+          defalt: false
+        },
+        refreshType: {
+          type: String,
+          default: 'refresh'
         }
       },
       mounted(){
@@ -39,6 +47,7 @@
             scrollY: true,
             probeType: this.probeType,
             click: this.click,
+            pullUpLoad: this.pullUpLoad
           })
 
           if(this.listenScroll){
@@ -46,6 +55,19 @@
               that.$emit('scrolling', pos)
             })
           }
+
+          if (this.pullUpLoad) {
+            this.scroll.on('scrollEnd', () => {
+              if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+                this.$emit('loadMore')
+              }
+            })
+          }
+        },
+        _initPullUpLoad() {
+          this.scroll.on('pullingUp', () => {
+            this.$emit('loadMore')
+          })
         },
         scrollToElement(...arg){
           this.scroll && this.scroll.scrollToElement.apply(this.scroll, arg);
@@ -66,7 +88,13 @@
       watch:{
         data(){
           this.$nextTick(()=>{
-            this.refresh()
+            console.log(this.refreshType)
+            if(this.refreshType == 'recalculate'){
+              this.recalculate()
+            }else{
+              this.refresh()
+            }
+
           })
         }
       }

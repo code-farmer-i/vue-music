@@ -10,17 +10,19 @@
       </div>
       <div class="middle">
         <slider :autoPlay="false" :loop="false">
-          <div class="slider-item">
+          <div class="slider-item cd-slider">
             <div class="player-cd">
               <div class="cd-wrap" :class="[playing ? 'play' : 'pause']">
                 <img :src="currentSong.discImg" width="100%" height="100%"
                      style="-webkit-border-radius: 50%;-moz-border-radius: 50%;border-radius: 50%;">
               </div>
             </div>
-            <div class="currentLyricTxt">{{currentLyricTxt}}</div>
+            <div class="currentLyricTxt">
+              <span class="text">{{currentLyricTxt}}</span>
+            </div>
           </div>
           <div class="slider-item">
-            <lyric ref="lyric" @lyricTxtChange="setCurrentLyricTxt"></lyric>
+            <lyric ref="lyric" @lyricTxtChange="setCurrentLyricTxt" @lyricReady="refreshLyric"></lyric>
           </div>
         </slider>
       </div>
@@ -91,6 +93,7 @@
       </div>
     </transition>
     <play-list v-show="showSongList"></play-list>
+    <audio ref="audioEl" @ended="audioEnd" @timeupdate="audioTimeupdate" @loadedmetadata="audioLoadedmetadata"></audio>
   </div>
 </template>
 
@@ -100,6 +103,9 @@
   import Lyric from 'components/Lyric/Lyric'
   import {mapState, mapActions, mapMutations, mapGetters} from 'vuex'
   import {favoriteMixin, ModeMixin} from '../../Mixin/Mixin'
+
+  //用来标识歌曲播放后时候刷新过一次歌词 为了防止网络延迟导致歌词有偏差
+  let isRefreshLyric = true;
 
   export default {
     data() {
@@ -116,35 +122,50 @@
     mounted() {
       this.$nextTick(() => {
         this.progressWidth = this.$refs.progress.clientWidth;
-        this.audioEl = new Audio();
 
-        this.audioEl.addEventListener('ended', () => {
-          if (this.getMode == 'loop') {
-            console.log('loop')
-            this.loopCallBack()
-          } else {
-            this.changeSong('next')
-          }
-        })
-
-        this.audioEl.onloadedmetadata = () => {
-          this.audioDuration = Math.floor(this.audioEl.duration);
-        }
-
-        this.audioEl.ontimeupdate = () => {
-          if (this.prevCurrentTime == Math.floor(this.audioEl.currentTime)) return
-
-          this.audioCurrentTime = this.audioEl.currentTime;
-          this.prevCurrentTime = Math.floor(this.audioEl.currentTime);
-        }
+        this.audioEl = this.$refs.audioEl;
       })
     },
     methods: {
+      audioLoadedmetadata(){
+        this.audioDuration = Math.floor(this.audioEl.duration);
+      },
+      audioTimeupdate(){
+        if (this.prevCurrentTime == Math.floor(this.audioEl.currentTime)) return
+
+        if(!isRefreshLyric){
+          this.$refs.lyric.refreshLyric(this.audioEl.currentTime)
+          isRefreshLyric = true;
+        }
+
+        this.audioCurrentTime = this.audioEl.currentTime;
+        this.prevCurrentTime = Math.floor(this.audioEl.currentTime);
+      },
+      refreshLyric(){
+        //刷新歌词位置 网络延迟会导致歌词会有稍微的偏差
+          this.refreshTimmer = setTimeout(()=>{
+            isRefreshLyric = false;
+          }, 600)
+      },
+      resetRefreshLyricMark(){
+        isRefreshLyric = true;
+        this.refreshTimmer && clearTimeout(this.refreshTimmer)
+      },
+      audioEnd(){
+        if (this.getMode == 'loop') {
+          this.loopCallBack()
+        } else {
+          //重置刷新歌词标识
+          this.resetRefreshLyricMark()
+
+          this.changeSong('next')
+        }
+      },
       setCurrentLyricTxt(t) {
-        console.log(t)
         this.currentLyricTxt = t
       },
       loopCallBack() {
+        this.audioEl.src = this.currentSong.audioSrc;
         this.audioEl.play()
 
         //刷新歌词位置
@@ -170,15 +191,22 @@
           .join(":")
           .replace(/\b(\d)\b/g, "0$1");
       },
-      _playSong(songId) {
-        this.audioEl.src = `http://ws.stream.qqmusic.qq.com/${songId}.m4a?fromtag=46`;
+      _playSong(songMid) {
+        this.audioEl.src = this.currentSong.audioSrc;
         this.audioEl.play();
+
+        //更新state
+        this.play()
+
+        //获取歌词
+        this.$refs.lyric.getLyric(songMid)
+
+        //重置刷新歌词标识
+        this.resetRefreshLyricMark()
 
         //添加到最近播放列表
         this.addToLatelyList(this.currentSong)
 
-        //更新state
-        this.play()
       },
       ...mapMutations(['showMini', 'showFull', 'play', 'pause', 'showPlayList', 'addToLatelyList']),
       ...mapActions(['changeSong'])
@@ -206,8 +234,12 @@
     watch: {
       currentSong(song, oldSong) {
         //若当首正在播放 则不切歌 除非当期列表只有一首
-        if (song.id != oldSong.id || this.songList.length == 1) {
-          this._playSong(song.id)
+        if (song.id != oldSong.id) {
+          console.log('play')
+          this._playSong(song.songMid)
+        }else if(this.songList.length == 1){
+          console.log('loop')
+          this.loopCallBack()
         }
       },
       playing(play) {
@@ -253,6 +285,7 @@
       animation-name title-leave
       animation-duration .2s
     .title-group
+      padding-bottom 10px
       position absolute
       top 0
       left 0
@@ -305,29 +338,35 @@
             transform translateX(120%)
     .middle
       position absolute
-      top 58px
-      bottom 148px
+      top 68px
+      bottom 118px
       width 100%
       z-index 2
+      overflow hidden
       .slider-item
         position relative
         height 100%
+      .cd-slider
+        padding-bottom 30px
+        display flex
+        flex-direction column
       .currentLyricTxt
-        position absolute
-        left 50%
-        bottom 40px
-        margin-left -40%
+        display flex
+        align-items center
+        justify-content center
+        margin 10px auto 0
+        flex 1
         width 80%
         font-size $font-size-medium
         color #f4f4f4
-        no-wrap()
+        .text
+          flex 1
+          no-wrap()
       .player-cd
+        margin 0 auto
+        position relative
         padding-top 80%
-        position absolute
-        left 10%
-        top 30px
         width 80%
-        z-index 2
         border-radius 50%
         overflow hidden
         .cd-wrap
@@ -360,7 +399,7 @@
       animation-duration .2s
     .bottom
       position: absolute
-      bottom: 50px
+      bottom: 30px
       width: 100%
       z-index 2
       transform translate3d(0, 150%, 0)
@@ -371,7 +410,7 @@
         align-items: center
         width: 80%
         margin: 0px auto
-        padding: 10px 0
+        padding-bottom 10px
         .progress-bar
           height 30px
           .bar-inner
