@@ -5,9 +5,9 @@
       <div class="song-list" ref="scrollView">
         <scroll :data="songList" ref="scroll">
           <ul class="song-list-wrap">
-            <li v-for="(item, index) in songList" class="song-wrap" @click="_playList(index)">
-              <div v-text="item.musicData.songname" class="song-name"></div>
-              <div class="song-disc">{{singer.name}} {{item.musicData.albumname}}</div>
+            <li v-for="(song, index) in songList" class="song-wrap" @click="_playList(index)">
+              <div v-html="song.name" class="song-name"></div>
+              <div class="song-disc" v-html="`${song.singerName} - ${song.albumName}`"></div>
             </li>
           </ul>
         </scroll>
@@ -49,14 +49,10 @@
         async getSingerDetails(singerId){
           let singerDetails = await API.getSingerDetails(singerId)
 
-          this.songList = Object.freeze(singerDetails.list)
+          this.songList = Object.freeze(singerDetails.list.map(val => new createSong(val.musicData)))
         },
         _playList(currentIdx){
-          const songList = this.songList.map((val)=>{
-            return new createSong(val.musicData)
-          })
-
-          this.playList({songList: Object.freeze(songList), currentIdx})
+          this.playList({songList: this.songList, currentIdx})
         },
         ...mapActions(['playList'])
       },

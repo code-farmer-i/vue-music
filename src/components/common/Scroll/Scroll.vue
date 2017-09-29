@@ -50,6 +50,9 @@
         scrollToElement(...arg){
           this.scroll && this.scroll.scrollToElement.apply(this.scroll, arg);
         },
+        scrollTo(...arg){
+          this.scroll && this.scroll.scrollTo.apply(this.scroll, arg);
+        },
         refresh(){
           if(this.scroll) {
             this.scroll.refresh()

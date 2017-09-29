@@ -55,9 +55,15 @@
             return new createSong(song)
         })
 
-        this.recommends = true;
-        this.$refs.recomPlaylist.formatData(result.recomPlaylist.data.v_hot);
+
+        let rec = result.recomPlaylist.data.v_hot;
+        rec = rec.sort((a, b)=>{
+          return b.listen_num - a.listen_num
+        })
+
+        this.$refs.recomPlaylist.formatData(rec);
         this.$refs.newSongList.formatData(newSongList);
+        this.recommends = true;
       },
       toRecommendCd(cd){
         this.setRecommendCd({

@@ -143,6 +143,7 @@
     height 100%
     .slider-group
       position relative
+      height 100%
       overflow hidden
       white-space nowrap
       .slider-item

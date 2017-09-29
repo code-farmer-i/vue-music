@@ -5,7 +5,6 @@ export default {
     commit('setSongList', songList)
     commit('setCurrentIdx', currentIdx)
     commit('showFull')
-    commit('play')
   },
   addSongToList({commit, state}, song){
 
@@ -22,7 +21,6 @@ export default {
     }
 
     commit('showFull')
-    commit('play')
   },
   changeSong({commit, state}, type){
     if(MODE_TYPE[state.mode] == 'random'){
@@ -40,7 +38,5 @@ export default {
         commit('playPrev')
       }
     }
-
-    commit('play')
   }
 }

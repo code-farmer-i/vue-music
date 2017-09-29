@@ -3,7 +3,8 @@
       <top-bar :title="recommend_cd.name"></top-bar>
       <div class="cd-photo" :style="{'background-image': `url(${recommend_cd.bg})`}"></div>
       <div class="list-wrap">
-        <list-view :data="songList" @itemClick="addSongToList"></list-view>
+        <list-view :data="songList" @itemClick="addSongToList" v-show="songList.length"></list-view>
+        <loading title="''" v-show="!songList.length"></loading>
       </div>
     </div>
 </template>
@@ -42,7 +43,6 @@
           songList = songList.map((song)=>{
             return new createSong(song)
           })
-          console.log(songList)
 
           this.songList = Object.freeze(songList)
         },

@@ -1,4 +1,4 @@
-import {HOST, commonParams} from './common'
+import {HOST, commonParams, proxyTable} from './common'
 
 const getApi = (URL) => {
   return HOST + URL
@@ -47,7 +47,7 @@ export default {
   },
   cdInfo: (disstid)=>{
     return {
-      url: (process.env.NODE_ENV === 'production' ? '/vue-music' : 'http://192.168.1.104:8080/goods') + '/getRecommendCd?params=' + param({
+      url: proxyTable + '/getRecommendCd?params=' + param({
         g_tk: 5381,
         type:1,
         json:1,

@@ -47,5 +47,8 @@ export default{
   },
   getCdInfo(disstid){
     return apiFactory(API.cdInfo(disstid))
+  },
+  getLyric(songmid){
+    return apiFactory(API.Lyric(songmid))
   }
 }
