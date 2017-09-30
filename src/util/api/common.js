@@ -1,6 +1,6 @@
 export const HOST = 'https://c.y.qq.com'
 
-export const proxyTable = process.env.NODE_ENV === 'production' ? '/vue-music' : 'http://192.168.1.104:8080/goods'
+export const proxyTable = 'https://ckang1229.wang/vue-music'
 
 //公共參數
 export const commonParams = {

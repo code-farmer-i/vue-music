@@ -93,7 +93,11 @@
       </div>
     </transition>
     <play-list v-show="showSongList"></play-list>
-    <audio ref="audioEl" @ended="audioEnd" @timeupdate="audioTimeupdate" @loadedmetadata="audioLoadedmetadata"></audio>
+    <audio ref="audioEl"
+           @ended="audioEnd"
+           @timeupdate="audioTimeupdate"
+           @durationchange="updateDuration"
+    ></audio>
   </div>
 </template>
 
@@ -127,7 +131,7 @@
       })
     },
     methods: {
-      audioLoadedmetadata(){
+      updateDuration(){
         this.audioDuration = Math.floor(this.audioEl.duration);
       },
       audioTimeupdate(){
@@ -193,7 +197,7 @@
       },
       _playSong(songMid) {
         this.audioEl.src = this.currentSong.audioSrc;
-        this.audioEl.play();
+        this.audioEl.play()
 
         //更新state
         this.play()
@@ -245,8 +249,10 @@
       playing(play) {
         if (play) {
           this.audioEl.play()
+          this.$refs.lyric.playLyric()
         } else {
           this.audioEl.pause()
+          this.$refs.lyric.pauseLyric()
         }
       }
     },

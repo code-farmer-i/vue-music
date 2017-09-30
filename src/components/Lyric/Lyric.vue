@@ -38,6 +38,8 @@
           this.currentLyric = new lyricParse(decodeBase64(result.lyric), this.onLyricLinesChange)
           this.lyric = Object.freeze(this.currentLyric.lines)
 
+          console.log(Object.freeze(this.currentLyric.lines))
+
           this.currentLyric.play()
           this.$emit('lyricReady')
 
@@ -53,6 +55,16 @@
 
           this.lyricCurrentLine = currentNum;
           this.$emit('lyricTxtChange', lyricCurrentLine.txt)
+        },
+        playLyric(){
+          if(this.currentLyric && this.currentLyric.state == 0){
+             this.currentLyric.togglePlay()
+          }
+        },
+        pauseLyric(){
+          if(this.currentLyric && this.currentLyric.state == 1){
+            this.currentLyric.togglePlay()
+          }
         },
         refreshLyric(t){
           if(this.currentLyric)  {

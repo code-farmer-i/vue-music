@@ -109,7 +109,9 @@
           this.searching = false;
           this.totalNum = result.song.totalnum;
           this.noResult = result.zhida.type == 0 && result.song.totalnum == 0 && this.songList.length == 0;
-          this.singer = result.zhida.type == 2 ? Object.freeze(result.zhida) : {};
+          if(result.zhida.type == 2){
+            this.singer = Object.freeze({...this.singer, ...result.zhida})
+          }
           this.songList = this.pageNum == 1 ? Object.freeze(result.song.list) : this.songList.concat(Object.freeze(result.song.list));
         },
         setQuery(type, k){
