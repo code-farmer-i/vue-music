@@ -22,7 +22,7 @@
     import Loading from 'components/common/Loading/Loading'
     import Scroll from 'components/common/Scroll/Scroll'
     import {refreshScroll} from '../../Mixin/Mixin'
-    import createSong from '../../util/createSong'
+    import {createSong} from '../../util/createSong'
     import API from '../../util/ApiServer'
 
     export default{

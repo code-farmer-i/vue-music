@@ -29,7 +29,7 @@
   import Scroll from 'components/common/Scroll/Scroll'
   import {refreshScroll} from '../../Mixin/Mixin'
   import rank from "../../util/api/rank";
-  import createSong from '../../util/createSong'
+  import {createSong} from '../../util/createSong'
   import API from '../../util/ApiServer'
 
   export default{

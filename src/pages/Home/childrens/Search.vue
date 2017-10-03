@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="quickSearch" v-show="!queryStr.length" ref="scrollView2">
-      <scroll :data="searchHistory" ref="scroll2">
+      <scroll ref="scroll2" :data="hotKey">
         <div>
           <div class="hot-key">
             <div class="title">热门搜索</div>
@@ -59,7 +59,7 @@
     import {mapActions, mapMutations} from 'vuex'
     import {refreshScroll} from '../../../Mixin/Mixin'
     import createSinger from '../../../util/createSinger'
-    import createSong from '../../../util/createSong'
+    import {createSong} from '../../../util/createSong'
     import searchHistory from '../../../util/searchHistory'
     import API from '../../../util/ApiServer'
 

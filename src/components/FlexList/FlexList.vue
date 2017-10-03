@@ -71,7 +71,7 @@
     .title
       margin 20px 0
       text-align center
-      font-size $font-size-medium-x
+      font-size $font-size-large
       color $color-font-d
       letter-spacing 2px
     .item-group
@@ -88,7 +88,7 @@
         .msg
           font-size $font-size-small
           color $color-font-d
-          line-height 16px
+          line-height 20px
           overflow hidden
           text-overflow ellipsis
           display -webkit-box

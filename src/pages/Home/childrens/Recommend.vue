@@ -26,7 +26,7 @@
   import API from '../../../util/ApiServer'
   import FlexList from 'components/FlexList/FlexList'
   import {refreshScroll} from '../../../Mixin/Mixin'
-  import createSong from '../../../util/createSong2'
+  import {createSong2} from '../../../util/createSong'
   import {mapActions, mapMutations} from 'vuex'
 
   export default {
@@ -52,7 +52,7 @@
         let newSongList = result.new_song.data.song_list;
 
         newSongList = newSongList.map((song)=>{
-            return new createSong(song)
+            return new createSong2(song)
         })
 
 

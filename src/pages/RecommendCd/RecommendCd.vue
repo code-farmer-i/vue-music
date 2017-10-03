@@ -16,7 +16,7 @@
     import Scroll from 'components/common/Scroll/Scroll'
     import ListView from 'components/common/ListView/ListView'
     import API from '../../util/ApiServer'
-    import createSong from '../../util/createSong'
+    import {createSong} from '../../util/createSong'
 
     export default {
       name: 'RecommendCd',
