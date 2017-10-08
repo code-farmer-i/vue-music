@@ -4,8 +4,8 @@
       <div>
         <div v-for="item in data" class="item" @click="$emit('itemClick', item)">
           <div class="item-wrap">
-            <h2>{{item.name}}</h2>
-            <p>{{item.singerName}} - {{item.albumName}}</p>
+            <h2 v-html="item.name"></h2>
+            <p v-html="`${item.singerName} - ${item.albumName}`"></p>
           </div>
         </div>
       </div>
