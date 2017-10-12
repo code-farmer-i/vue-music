@@ -4,14 +4,14 @@ import Router from 'vue-router'
 import Home from 'pages/Home/Home'
 import Recommend from 'pages/Home/childrens/Recommend'
 
-const SingerList = r => require.ensure([], () => r(require('pages/Home/childrens/SingerList')), 'SingerList')
-const RankList = r => require.ensure([], () => r(require('pages/Home/childrens/RankList')), 'RankList')
-const Search = r => require.ensure([], () => r(require('pages/Home/childrens/Search')), 'Search')
+const SingerList = () => import('pages/Home/childrens/SingerList')
+const RankList = () => import('pages/Home/childrens/RankList')
+const Search = () => import('pages/Home/childrens/Search')
 
-const Singer = r => require.ensure([], () => r(require('pages/Singer/Singer')), 'Singer')
-const Rank = r => require.ensure([], () => r(require('pages/Rank/Rank')), 'Rank')
-const User = r => require.ensure([], () => r(require('pages/User/User')), 'User')
-const RecommendCd = r => require.ensure([], () => r(require('pages/RecommendCd/RecommendCd')), 'RecommendCd')
+const Singer = () => import('pages/Singer/Singer')
+const Rank = () => import('pages/Rank/Rank')
+const User = () => import('pages/User/User')
+const RecommendCd = () => import('pages/RecommendCd/RecommendCd')
 
 Vue.use(Router)
 

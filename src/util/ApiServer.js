@@ -15,6 +15,7 @@ const apiFactory = ({url, params, method, dataName, options})=>{
   return new Promise((resolve)=>{
     request
     .then((res)=>{
+      console.log(res)
       resolve(res[dataName] || res.data || res)
     })
   })

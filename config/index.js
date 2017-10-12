@@ -28,8 +28,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/goods': {
-        target: 'http://192.168.1.104:8080/',
+      '/vue-music': {
+        target: 'http://192.168.1.105:8080/',
         changeOrigin: true,
         pathRewrite: {
           '^/login': ''
