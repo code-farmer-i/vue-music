@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
-    "build": "node build/build.js",
-    "analyz": "set NODE_ENV=production && set npm_config_report=true && npm run build"
+    "build": "node build/build.js"
   },
   "dependencies": {
     "axios": "^0.16.2",
