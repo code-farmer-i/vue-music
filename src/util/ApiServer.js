@@ -1,7 +1,7 @@
 import API from './api'
 import axios from 'axios'
 import jsonp from './myJsonp'
-
+import eventBus from './eventBus'
 
 const apiFactory = ({url, params, method, dataName, options})=>{
   const request = method === 'jsonp' ?

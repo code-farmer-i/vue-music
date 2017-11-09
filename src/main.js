@@ -10,6 +10,7 @@ import './assets/stylus/index.styl'
 
 import FastClick from 'fastclick'
 import VueLazyload from 'vue-lazyload'
+import eventBus from './util/eventBus'
 
 FastClick.attach(document.body)
 
@@ -21,9 +22,10 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
   store,
-  template: '<App/>',
-  components: { App }
-})
+  components: { App },
+  render(h){
+    return h(App)
+  }
+}).$mount('#app')

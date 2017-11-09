@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
+    "test": "set NODE_ENV=test && node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js"
   },
