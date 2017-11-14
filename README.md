@@ -2,6 +2,9 @@
 
 > vue-music-demo
 
+线上地址
+https://ckang1229.wang/vue-music/dist/#/Recommend
+
 ## Build Setup
 
 ``` bash
