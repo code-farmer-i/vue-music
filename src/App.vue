@@ -39,6 +39,7 @@
       '$route': function(to, from){
         const toDepth = to.path.split('/').length
         const fromDepth = from.path.split('/').length
+
         this.transitionName = toDepth < fromDepth ? 'translate-right' : 'translate-left';
       }
     },

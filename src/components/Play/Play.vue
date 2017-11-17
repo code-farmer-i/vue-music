@@ -107,6 +107,7 @@
   import Lyric from 'components/Lyric/Lyric'
   import {mapState, mapActions, mapMutations, mapGetters} from 'vuex'
   import {favoriteMixin, ModeMixin} from '../../Mixin/Mixin'
+  import mapModule from '../../util/mapModule'
 
   //用来标识歌曲播放后时候刷新过一次歌词 为了防止网络延迟导致歌词有偏差
   let isRefreshLyric = true;
@@ -124,6 +125,7 @@
     },
     mixins: [favoriteMixin, ModeMixin],
     mounted() {
+      console.log(this.a);
       this.$nextTick(() => {
         this.progressWidth = this.$refs.progress.clientWidth;
 
@@ -225,14 +227,14 @@
       showDuration() {
         return this._formatTime(this.audioDuration)
       },
-      ...mapState({
-        playing: state => state.Play.playing,
-        mode: state => state.Play.mode,
-        fullScreen: state => state.Play.fullScreen,
-        songList: state => state.Play.songList,
-        currentIdx: state => state.Play.currentIdx,
-        showSongList: state => state.Play.showSongList
-      }),
+      ...mapState(mapModule('Play', [
+        'playing',
+        'mode',
+        'fullScreen',
+        'songList',
+        'currentIdx',
+        'showSongList'
+      ])),
       ...mapGetters(['currentSong'])
     },
     watch: {
